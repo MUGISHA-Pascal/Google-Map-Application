@@ -6,6 +6,14 @@ export interface Address {
   Country: string;
 }
 
+export interface AddressComponents {
+  street: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+}
+
 // this is sitemaker interface
 export interface SiteMarker {
   Name: string;
@@ -23,7 +31,9 @@ export interface SiteMarker {
 }
 
 export interface InterConnectSegment {
-  Name: string;
+  Source: string;
+  Target: string;
+  Name?: string;
   Desc: string;
   LineType: string;
   LineWidthpx: string;

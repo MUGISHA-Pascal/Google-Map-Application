@@ -38,17 +38,73 @@ export const parseLatLng = (latLng: string): google.maps.LatLngLiteral | null =>
   return isNaN(lat) || isNaN(lng) ? null : { lat, lng };
 };
 
+export interface AddressComponents {
+  street: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+}
 
-export async function reverseGeocode({ lat, lng }: { lat: number; lng: number }): Promise<string> {
+export async function reverseGeocode({ lat, lng }: { lat: number; lng: number }): Promise<AddressComponents> {
+  const google = await loader.load();
   const geocoder = new google.maps.Geocoder();
-  return new Promise((resolve, reject) => {
-    geocoder.geocode({ location: { lat, lng } }, (results, status) => {
-      if (status === 'OK' && results && results[0]) {
-        resolve(results[0].formatted_address);
-      } else {
-        reject(`Geocode was not successful for the following reason: ${status}`);
-      }
+  
+  try {
+    const response = await geocoder.geocode({
+      location: { lat, lng }
     });
-  });
+
+    if (response.results && response.results[0]) {
+      const result = response.results[0];
+      const addressComponents = result.address_components;
+      
+      let street = '';
+      let city = '';
+      let state = '';
+      let postalCode = '';
+      let country = '';
+
+      // Parse address components
+      addressComponents.forEach((component: any) => {
+        const types = component.types;
+        
+        if (types.includes('street_number') || types.includes('route')) {
+          street = street ? `${street} ${component.long_name}` : component.long_name;
+        }
+        if (types.includes('locality')) {
+          city = component.long_name;
+        }
+        if (types.includes('administrative_area_level_1')) {
+          state = component.long_name;
+        }
+        if (types.includes('postal_code')) {
+          postalCode = component.long_name;
+        }
+        if (types.includes('country')) {
+          country = component.long_name;
+        }
+      });
+
+      return {
+        street: street || result.formatted_address.split(',')[0],
+        city,
+        state,
+        postalCode,
+        country
+      };
+    }
+    
+    throw new Error('No results found');
+  } catch (error) {
+    console.error('Error in reverse geocoding:', error);
+    return {
+      street: '',
+      city: 'Unknown City',
+      state: '',
+      postalCode: '',
+      country: 'Unknown Country'
+    };
+  }
 }
 

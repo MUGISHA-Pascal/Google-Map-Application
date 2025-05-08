@@ -1,3 +1,4 @@
+// src/hooks/useGeocode.ts
 import { useState, useEffect } from 'react';
 import { reverseGeocode, AddressComponents } from '@/app/utils/MapUtils';
 

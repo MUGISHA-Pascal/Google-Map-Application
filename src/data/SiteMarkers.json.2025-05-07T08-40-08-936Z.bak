@@ -1,6 +1,6 @@
 [
   {
-    "Name": "Lisle-2300",
+    "Name": "Lisle, United States",
     "Selected": "0",
     "Update": "1",
     "LatLng": "41.81047, -88.098253",
@@ -11,7 +11,7 @@
     "Details": "This is IL Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line4"
   },
   {
-    "Name": "Lisle-3030",
+    "Name": "Lisle, United States",
     "Selected": "0",
     "Update": "1",
     "LatLng": "41.810424, -88.112762",
@@ -22,7 +22,7 @@
     "Details": "This is IL Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line4"
   },
   {
-    "Name": "Lisle-1011 Midwest backup",
+    "Name": "Lisle, United States",
     "Selected": "0",
     "Update": "1",
     "LatLng": "41.8074315, -88.0752428",
@@ -33,7 +33,7 @@
     "Details": "This is IL Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line4"
   },
   {
-    "Name": "LovesPark, IL - DR",
+    "Name": "Loves Park, United States",
     "Selected": "0",
     "Update": "1",
     "LatLng": "42.3191876, -88.9903466",
@@ -44,18 +44,7 @@
     "Details": "This is LovesPark IL Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line6"
   },
   {
-    "Name": "IOWA",
-    "Selected": "0",
-    "Update": "1",
-    "LatLng": "41.2550753, -95.8647657",
-    "Address": "{Address: \"1207 7th Ave Council Bluffs\", City: \"Council Bluffs\", State: \"IA\", ZIP: \"51501\", Country: \"USA\"}",
-    "iconSVGfile": "myicon.svg",
-    "AlertStatus": "0",
-    "tooltip": "This is Crawford County, IOWA tooltip line1\\nThis is Tooltip line2",
-    "Details": "This is IowA Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line4"
-  },
-  {
-    "Name": "Anchorage",
+    "Name": "Anchorage, United States",
     "Selected": "0",
     "Update": "1",
     "LatLng": "61.1910447, -149.8221347",
@@ -66,29 +55,7 @@
     "Details": "This is AK Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line5"
   },
   {
-    "Name": "Tokyo",
-    "Selected": "0",
-    "Update": "1",
-    "LatLng": "35.6998313, 139.7388709",
-    "Address": "{Address: \"1 Chrome-3 Kagurazaka\", City: \"Shinjuku City\", State: \"Tokyo\", ZIP: \"162-8601\", Country: \"Japan\"}",
-    "iconSVGfile": "myicon.svg",
-    "AlertStatus": "0",
-    "tooltip": "This is the Tokyo University of Science\\nThis is Tooltip line3",
-    "Details": "This is Tokyo University of Sciences Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line5"
-  },
-  {
-    "Name": "Sydney",
-    "Selected": "0",
-    "Update": "1",
-    "LatLng": "-33.8883996, 151.1841899",
-    "Address": "{Address: \"\", City: \"Camperdown\", State: \"NSW\", ZIP: \"2050\", Country: \"Australia\"}",
-    "iconSVGfile": "myicon.svg",
-    "AlertStatus": "0",
-    "tooltip": "This is the University of Sydney\\nThis is Tooltip line3",
-    "Details": "This is University of Sydney Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line5"
-  },
-  {
-    "Name": "New Delhi",
+    "Name": "New Delhi, India",
     "Selected": "0",
     "Update": "1",
     "LatLng": "28.6362567, 77.1046916",
@@ -99,7 +66,7 @@
     "Details": "This is University of Delhi Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line5"
   },
   {
-    "Name": "Ebury, London",
+    "Name": ", United Kingdom",
     "Selected": "0",
     "Update": "1",
     "LatLng": "51.4955727, -0.1481035",
@@ -110,29 +77,7 @@
     "Details": "This is Ebury Mews E, London Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line7"
   },
   {
-    "Name": "Atomic-Brussels",
-    "Selected": "0",
-    "Update": "1",
-    "LatLng": "50.895692, 4.3376882",
-    "Address": "{Address: \"Place de l'Atomium 1\", City: \"Bruxelles\", State: \"\", ZIP: \"B-1020\", Country: \"Belgium\"}",
-    "iconSVGfile": "myicon.svg",
-    "AlertStatus": "0",
-    "tooltip": "This is Brussels tooltip line1\\nThis is Tooltip line4",
-    "Details": "This is Brussels Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line6"
-  },
-  {
-    "Name": "Blanford, London",
-    "Selected": "0",
-    "Update": "1",
-    "LatLng": "51.508431, -0.204722",
-    "Address": "{Address: \"15-17 Blandford St\", City: \"London\", State: \"England\", ZIP: \"W1U 3DG\", Country: \"United Kingdom\"}",
-    "iconSVGfile": "myicon.svg",
-    "AlertStatus": "0",
-    "tooltip": "This is Blandford St, London tooltip line1\\nThis is Tooltip line4",
-    "Details": "This is Blanford, London Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line6"
-  },
-  {
-    "Name": "Springfield, IL",
+    "Name": "Springfield, United States",
     "Selected": "0",
     "Update": "1",
     "LatLng": "39.7588067, -89.6491774",
@@ -143,25 +88,25 @@
     "Details": "This is Springfield Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line6"
   },
   {
-    "Name": "Suoniemi, Finland",
+    "Name": ", ",
     "Selected": "0",
     "Update": "1",
-    "LatLng": "64.05328820231705, 28.447827099999998",
-    "Address": "{\"\"Address\"\":\"\"3C3X+84 Suoniemi\"\",\"\"City\"\":\"\"Suoniemi\"\",\"\"State\"\":\"\"Kainuu\"\",\"\"ZIP\"\":\"\"88600\"\",\"\"Country\"\":\"\"Finland\"\"}",
+    "LatLng": "20.77694952628591, 2.4732523999999945",
+    "Address": "{\"\"Address\"\":\"\"C83WC4V9+4W\"\",\"\"City\"\":\"\"\"\",\"\"State\"\":\"\"\"\",\"\"ZIP\"\":\"\"\"\",\"\"Country\"\":\"\"\"\"}",
     "iconSVGfile": "myicon.svg",
     "AlertStatus": "0",
-    "tooltip": "This is Suoniemi tooltip line1\\nLocation: 3C3X+84 Suoniemi\\nFinland",
-    "Details": "This is Suoniemi Details line1\\nAddress: 3C3X+84 Suoniemi\\nCity: Suoniemi\\nCountry: Finland"
+    "tooltip": "This is  tooltip line1\\nLocation: C83WC4V9+4W\\n",
+    "Details": "This is  Details line1\\nAddress: C83WC4V9+4W\\nCity: \\nCountry: "
   },
   {
-    "Name": "El Pochote, Mexico",
+    "Name": ", Indonesia",
     "Selected": "0",
     "Update": "1",
-    "LatLng": "18.734505823875168, -100.59107300000005",
-    "Address": "{\"\"Address\"\":\"\"PCM5+RH El Pochote\"\",\"\"City\"\":\"\"El Pochote\"\",\"\"State\"\":\"\"Guerrero\"\",\"\"ZIP\"\":\"\"\"\",\"\"Country\"\":\"\"Mexico\"\"}",
+    "LatLng": "-8.5056161598073, 112.61893819999997",
+    "Address": "{\"\"Address\"\":\"\"FJV9+QH Sitiarjo\"\",\"\"City\"\":\"\"\"\",\"\"State\"\":\"\"East Java\"\",\"\"ZIP\"\":\"\"\"\",\"\"Country\"\":\"\"Indonesia\"\"}",
     "iconSVGfile": "myicon.svg",
     "AlertStatus": "0",
-    "tooltip": "This is El Pochote tooltip line1\\nLocation: PCM5+RH El Pochote\\nMexico",
-    "Details": "This is El Pochote Details line1\\nAddress: PCM5+RH El Pochote\\nCity: El Pochote\\nCountry: Mexico"
+    "tooltip": "This is  tooltip line1\\nLocation: FJV9+QH Sitiarjo\\nIndonesia",
+    "Details": "This is  Details line1\\nAddress: FJV9+QH Sitiarjo\\nCity: \\nCountry: Indonesia"
   }
 ]

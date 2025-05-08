@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef, useState } from "react";
 import {
   loader,
@@ -250,8 +251,8 @@ export default function GoogleMap({
     processedMarkersRef.current = [];
 
     // Declare listener variables
-    let clickListener: google.maps.MapsEventListener | null = null;
-    let mouseoverListener: google.maps.MapsEventListener | null = null;
+    const clickListener: google.maps.MapsEventListener | null = null;
+    const mouseoverListener: google.maps.MapsEventListener | null = null;
 
     // Remove existing markers
     markersRef.current.forEach((marker) => {

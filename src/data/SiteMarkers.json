@@ -77,17 +77,6 @@
     "Details": "This is Tokyo University of Sciences Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line5"
   },
   {
-    "Name": "Sydney",
-    "Selected": "0",
-    "Update": "1",
-    "LatLng": "-33.8883996, 151.1841899",
-    "Address": "{Address: \"\", City: \"Camperdown\", State: \"NSW\", ZIP: \"2050\", Country: \"Australia\"}",
-    "iconSVGfile": "myicon.svg",
-    "AlertStatus": "0",
-    "tooltip": "This is the University of Sydney\\nThis is Tooltip line3",
-    "Details": "This is University of Sydney Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line5"
-  },
-  {
     "Name": "New Delhi",
     "Selected": "0",
     "Update": "1",
@@ -143,25 +132,36 @@
     "Details": "This is Springfield Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line6"
   },
   {
+    "Name": "Riceton, Canada",
+    "Selected": "0",
+    "Update": "1",
+    "LatLng": "50.0487722086552, -104.34110161022954",
+    "Address": "{\"\"Address\"\":\"\"2MX5+GH Riceton\"\",\"\"City\"\":\"\"Riceton\"\",\"\"State\"\":\"\"Saskatchewan\"\",\"\"ZIP\"\":\"\"S0G 4E0\"\",\"\"Country\"\":\"\"Canada\"\"}",
+    "iconSVGfile": "myicon.svg",
+    "AlertStatus": "0",
+    "tooltip": "This is Riceton tooltip line1\\nLocation: 2MX5+GH Riceton\\nCanada",
+    "Details": "This is Riceton Details line1\\nAddress: 2MX5+GH Riceton\\nCity: Riceton\\nCountry: Canada"
+  },
+  {
     "Name": "Suoniemi, Finland",
     "Selected": "0",
     "Update": "1",
-    "LatLng": "64.05328820231705, 28.447827099999998",
-    "Address": "{\"\"Address\"\":\"\"3C3X+84 Suoniemi\"\",\"\"City\"\":\"\"Suoniemi\"\",\"\"State\"\":\"\"Kainuu\"\",\"\"ZIP\"\":\"\"88600\"\",\"\"Country\"\":\"\"Finland\"\"}",
+    "LatLng": "70.83528840876438, -40.92716574744262",
+    "Address": "{\"\"Address\"\":\"\"C82XR3PF+44\"\",\"\"City\"\":\"\"\"\",\"\"State\"\":\"\"\"\",\"\"ZIP\"\":\"\"\"\",\"\"Country\"\":\"\"\"\"}",
     "iconSVGfile": "myicon.svg",
     "AlertStatus": "0",
-    "tooltip": "This is Suoniemi tooltip line1\\nLocation: 3C3X+84 Suoniemi\\nFinland",
-    "Details": "This is Suoniemi Details line1\\nAddress: 3C3X+84 Suoniemi\\nCity: Suoniemi\\nCountry: Finland"
+    "tooltip": "This is Suoniemi, Finland tooltip line1\\nLocation: C82XR3PF+44\\n",
+    "Details": "This is Suoniemi, Finland Details line1\\nAddress: C82XR3PF+44\\nCity: \\nCountry: "
   },
   {
-    "Name": "El Pochote, Mexico",
+    "Name": "Sydney",
     "Selected": "0",
     "Update": "1",
-    "LatLng": "18.734505823875168, -100.59107300000005",
-    "Address": "{\"\"Address\"\":\"\"PCM5+RH El Pochote\"\",\"\"City\"\":\"\"El Pochote\"\",\"\"State\"\":\"\"Guerrero\"\",\"\"ZIP\"\":\"\"\"\",\"\"Country\"\":\"\"Mexico\"\"}",
+    "LatLng": "-45.39309373166326, 163.37167559488523",
+    "Address": "{\"\"Address\"\":\"\"4V65J94C+QM\"\",\"\"City\"\":\"\"\"\",\"\"State\"\":\"\"\"\",\"\"ZIP\"\":\"\"\"\",\"\"Country\"\":\"\"\"\"}",
     "iconSVGfile": "myicon.svg",
     "AlertStatus": "0",
-    "tooltip": "This is El Pochote tooltip line1\\nLocation: PCM5+RH El Pochote\\nMexico",
-    "Details": "This is El Pochote Details line1\\nAddress: PCM5+RH El Pochote\\nCity: El Pochote\\nCountry: Mexico"
+    "tooltip": "This is Sydney tooltip line1\\nLocation: 4V65J94C+QM\\n",
+    "Details": "This is Sydney Details line1\\nAddress: 4V65J94C+QM\\nCity: \\nCountry: "
   }
 ]

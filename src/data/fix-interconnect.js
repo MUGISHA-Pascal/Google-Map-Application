@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 const fs = require('fs');
 
 const markers = JSON.parse(fs.readFileSync('./src/data/SiteMarkers.json', 'utf8'));

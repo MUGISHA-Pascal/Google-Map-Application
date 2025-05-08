@@ -360,6 +360,7 @@ const DataPreview: React.FC<PopupDataViewProps> = ({
     "markers"
   );
   const [searchQuery, setSearchQuery] = useState("");
+  console.log(activeTabIndex,setActiveTabIndex)
 
   const getPreviousMarkerState = (markerName: string) => {
     return previousMarkers.find((m) => m.Name === markerName);

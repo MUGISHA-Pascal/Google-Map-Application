@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef, useState } from "react";
 import {
@@ -58,6 +60,7 @@ export default function GoogleMap({
   const [previousMarkerStates, setPreviousMarkerStates] = useState<
     Map<string, SiteMarker>
   >(new Map());
+  console.log(draggedMarkers)
 
   // Refs to store map objects
   const markersRef = useRef<

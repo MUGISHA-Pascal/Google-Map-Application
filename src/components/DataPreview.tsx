@@ -359,8 +359,8 @@ const DataPreview: React.FC<PopupDataViewProps> = ({
   const [dataType, setDataType] = useState<"markers" | "interconnects">(
     "markers"
   );
+  console.log(activeTabIndex,setActiveTabIndex);
   const [searchQuery, setSearchQuery] = useState("");
-  console.log(activeTabIndex,setActiveTabIndex)
 
   const getPreviousMarkerState = (markerName: string) => {
     return previousMarkers.find((m) => m.Name === markerName);

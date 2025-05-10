@@ -77,6 +77,17 @@
     "Details": "This is Tokyo University of Sciences Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line5"
   },
   {
+    "Name": "Sydney",
+    "Selected": "0",
+    "Update": "1",
+    "LatLng": "-33.8883996, 151.1841899",
+    "Address": "{Address: \"\", City: \"Camperdown\", State: \"NSW\", ZIP: \"2050\", Country: \"Australia\"}",
+    "iconSVGfile": "myicon.svg",
+    "AlertStatus": "0",
+    "tooltip": "This is the University of Sydney\\nThis is Tooltip line3",
+    "Details": "This is University of Sydney Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line5"
+  },
+  {
     "Name": "New Delhi",
     "Selected": "0",
     "Update": "1",
@@ -110,17 +121,6 @@
     "Details": "This is Brussels Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line6"
   },
   {
-    "Name": "Blanford, London",
-    "Selected": "0",
-    "Update": "1",
-    "LatLng": "51.508431, -0.204722",
-    "Address": "{Address: \"15-17 Blandford St\", City: \"London\", State: \"England\", ZIP: \"W1U 3DG\", Country: \"United Kingdom\"}",
-    "iconSVGfile": "myicon.svg",
-    "AlertStatus": "0",
-    "tooltip": "This is Blandford St, London tooltip line1\\nThis is Tooltip line4",
-    "Details": "This is Blanford, London Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line6"
-  },
-  {
     "Name": "Springfield, IL",
     "Selected": "0",
     "Update": "1",
@@ -132,36 +132,36 @@
     "Details": "This is Springfield Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line6"
   },
   {
-    "Name": "Riceton, Canada",
+    "Name": "Siljala, Finland",
     "Selected": "0",
     "Update": "1",
-    "LatLng": "50.0487722086552, -104.34110161022954",
-    "Address": "{\"\"Address\"\":\"\"2MX5+GH Riceton\"\",\"\"City\"\":\"\"Riceton\"\",\"\"State\"\":\"\"Saskatchewan\"\",\"\"ZIP\"\":\"\"S0G 4E0\"\",\"\"Country\"\":\"\"Canada\"\"}",
+    "LatLng": "56.99326853695428, 93.8384521",
+    "Address": "{\"\"Address\"\":\"\"9HJ9QQWM+4G\"\",\"\"City\"\":\"\"\"\",\"\"State\"\":\"\"\"\",\"\"ZIP\"\":\"\"\"\",\"\"Country\"\":\"\"\"\"}",
     "iconSVGfile": "myicon.svg",
     "AlertStatus": "0",
-    "tooltip": "This is Riceton tooltip line1\\nLocation: 2MX5+GH Riceton\\nCanada",
-    "Details": "This is Riceton Details line1\\nAddress: 2MX5+GH Riceton\\nCity: Riceton\\nCountry: Canada"
+    "tooltip": "This is Siljala, Finland tooltip line1\\nLocation: 9HJ9QQWM+4G\\n",
+    "Details": "This is Siljala, Finland Details line1\\nAddress: 9HJ9QQWM+4G\\nCity: \\nCountry: "
   },
   {
-    "Name": "Suoniemi, Finland",
+    "Name": "Blanford, London",
     "Selected": "0",
     "Update": "1",
-    "LatLng": "70.83528840876438, -40.92716574744262",
-    "Address": "{\"\"Address\"\":\"\"C82XR3PF+44\"\",\"\"City\"\":\"\"\"\",\"\"State\"\":\"\"\"\",\"\"ZIP\"\":\"\"\"\",\"\"Country\"\":\"\"\"\"}",
+    "LatLng": "64.8487245819523, 25.810902999999996",
+    "Address": "{\"\"Address\"\":\"\"66-68 Ladbroke Road\"\",\"\"City\"\":\"\"\"\",\"\"State\"\":\"\"England\"\",\"\"ZIP\"\":\"\"W11 3NT\"\",\"\"Country\"\":\"\"United Kingdom\"\"}",
     "iconSVGfile": "myicon.svg",
     "AlertStatus": "0",
-    "tooltip": "This is Suoniemi, Finland tooltip line1\\nLocation: C82XR3PF+44\\n",
-    "Details": "This is Suoniemi, Finland Details line1\\nAddress: C82XR3PF+44\\nCity: \\nCountry: "
+    "tooltip": "This is Blanford, London tooltip line1\\nLocation: 66-68 Ladbroke Road\\nUnited Kingdom",
+    "Details": "This is Blanford, London Details line1\\nAddress: 66-68 Ladbroke Road\\nCity: \\nCountry: United Kingdom"
   },
   {
-    "Name": "Sydney",
+    "Name": "McLean, Canada",
     "Selected": "0",
     "Update": "1",
-    "LatLng": "-45.39309373166326, 163.37167559488523",
-    "Address": "{\"\"Address\"\":\"\"4V65J94C+QM\"\",\"\"City\"\":\"\"\"\",\"\"State\"\":\"\"\"\",\"\"ZIP\"\":\"\"\"\",\"\"Country\"\":\"\"\"\"}",
+    "LatLng": "50.57263865800197, -104.10669800000005",
+    "Address": "{\"\"Address\"\":\"\"HVFV+38 McLean\"\",\"\"City\"\":\"\"McLean\"\",\"\"State\"\":\"\"Saskatchewan\"\",\"\"ZIP\"\":\"\"S0G 3E0\"\",\"\"Country\"\":\"\"Canada\"\"}",
     "iconSVGfile": "myicon.svg",
     "AlertStatus": "0",
-    "tooltip": "This is Sydney tooltip line1\\nLocation: 4V65J94C+QM\\n",
-    "Details": "This is Sydney Details line1\\nAddress: 4V65J94C+QM\\nCity: \\nCountry: "
+    "tooltip": "This is McLean tooltip line1\\nLocation: HVFV+38 McLean\\nCanada",
+    "Details": "This is McLean Details line1\\nAddress: HVFV+38 McLean\\nCity: McLean\\nCountry: Canada"
   }
 ]

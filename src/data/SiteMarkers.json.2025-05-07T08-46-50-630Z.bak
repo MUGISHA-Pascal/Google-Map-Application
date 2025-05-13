@@ -1,0 +1,68 @@
+[
+  {
+    "Name": "Lisle, United States",
+    "Selected": "0",
+    "Update": "1",
+    "LatLng": "41.8074315, -88.0752428",
+    "Address": "{Address: \"2300 Cabot drive\", City: \"Lisle\", State: \"IL\", ZIP: \"60532\", Country: \"USA\"}",
+    "iconSVGfile": "myicon.svg",
+    "AlertStatus": "0",
+    "tooltip": "This is Lisle, IL tooltip line1\\nThis is Tooltip line2",
+    "Details": "This is IL Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line4"
+  },
+  {
+    "Name": "Loves Park, United States",
+    "Selected": "0",
+    "Update": "1",
+    "LatLng": "42.3191876, -88.9903466",
+    "Address": "{Address: \"6430 E Riverside Blvd\", City: \"Loves Park\", State: \"IL\", ZIP: \"61111\", Country: \"United States\"}",
+    "iconSVGfile": "myicon.svg",
+    "AlertStatus": "0",
+    "tooltip": "This is Loves Park, IL tooltip line1\\nThis is Tooltip line4",
+    "Details": "This is LovesPark IL Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line6"
+  },
+  {
+    "Name": ", Indonesia",
+    "Selected": "0",
+    "Update": "1",
+    "LatLng": "-8.5056161598073, 112.61893819999997",
+    "Address": "{\"\"Address\"\":\"\"FJV9+QH Sitiarjo\"\",\"\"City\"\":\"\"\"\",\"\"State\"\":\"\"East Java\"\",\"\"ZIP\"\":\"\"\"\",\"\"Country\"\":\"\"Indonesia\"\"}",
+    "iconSVGfile": "myicon.svg",
+    "AlertStatus": "0",
+    "tooltip": "This is  tooltip line1\\nLocation: FJV9+QH Sitiarjo\\nIndonesia",
+    "Details": "This is  Details line1\\nAddress: FJV9+QH Sitiarjo\\nCity: \\nCountry: Indonesia"
+  },
+  {
+    "Name": "Kolmasmäki, Finland",
+    "Selected": "0",
+    "Update": "1",
+    "LatLng": "63.46069322814016, 27.625334000000016",
+    "Address": "{\"\"Address\"\":\"\"FJ6G+74 Kolmasmäki\"\",\"\"City\"\":\"\"Kolmasmäki\"\",\"\"State\"\":\"\"Pohjois-Savo\"\",\"\"ZIP\"\":\"\"73100\"\",\"\"Country\"\":\"\"Finland\"\"}",
+    "iconSVGfile": "myicon.svg",
+    "AlertStatus": "2",
+    "tooltip": "This is Kolmasmäki tooltip line1\\nLocation: FJ6G+74 Kolmasmäki\\nFinland",
+    "Details": "This is Kolmasmäki Details line1\\nAddress: FJ6G+74 Kolmasmäki\\nCity: Kolmasmäki\\nCountry: Finland"
+  },
+  {
+    "Name": "El Cortés, Mexico",
+    "Selected": "0",
+    "Update": "1",
+    "LatLng": "16.7846596841811, -99.49292739999999",
+    "Address": "{\"\"Address\"\":\"\"QGM4+VR El Cortés\"\",\"\"City\"\":\"\"El Cortés\"\",\"\"State\"\":\"\"Guerrero\"\",\"\"ZIP\"\":\"\"39981\"\",\"\"Country\"\":\"\"Mexico\"\"}",
+    "iconSVGfile": "myicon.svg",
+    "AlertStatus": "0",
+    "tooltip": "This is El Cortés tooltip line1\\nLocation: QGM4+VR El Cortés\\nMexico",
+    "Details": "This is El Cortés Details line1\\nAddress: QGM4+VR El Cortés\\nCity: El Cortés\\nCountry: Mexico"
+  },
+  {
+    "Name": ", ",
+    "Selected": "0",
+    "Update": "1",
+    "LatLng": "61.106223433770396, 93.45911529999998",
+    "Address": "{\"\"Address\"\":\"\"9MHM4F45+FJ\"\",\"\"City\"\":\"\"\"\",\"\"State\"\":\"\"\"\",\"\"ZIP\"\":\"\"\"\",\"\"Country\"\":\"\"\"\"}",
+    "iconSVGfile": "myicon.svg",
+    "AlertStatus": "0",
+    "tooltip": "This is  tooltip line1\\nLocation: 9MHM4F45+FJ\\n",
+    "Details": "This is  Details line1\\nAddress: 9MHM4F45+FJ\\nCity: \\nCountry: "
+  }
+]

@@ -1,0 +1,90 @@
+[
+  {
+    "Name": "Lisle, United States",
+    "Selected": "0",
+    "Update": "1",
+    "LatLng": "41.8074315, -88.0752428",
+    "Address": "{Address: \"2300 Cabot drive\", City: \"Lisle\", State: \"IL\", ZIP: \"60532\", Country: \"USA\"}",
+    "iconSVGfile": "myicon.svg",
+    "AlertStatus": "0",
+    "tooltip": "This is Lisle, IL tooltip line1\\nThis is Tooltip line2",
+    "Details": "This is IL Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line4"
+  },
+  {
+    "Name": "Loves Park, United States",
+    "Selected": "0",
+    "Update": "1",
+    "LatLng": "42.3191876, -88.9903466",
+    "Address": "{Address: \"6430 E Riverside Blvd\", City: \"Loves Park\", State: \"IL\", ZIP: \"61111\", Country: \"United States\"}",
+    "iconSVGfile": "myicon.svg",
+    "AlertStatus": "0",
+    "tooltip": "This is Loves Park, IL tooltip line1\\nThis is Tooltip line4",
+    "Details": "This is LovesPark IL Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line6"
+  },
+  {
+    "Name": "Anchorage, United States",
+    "Selected": "0",
+    "Update": "1",
+    "LatLng": "61.1910447, -149.8221347",
+    "Address": "{Address: \"3211 Providence Dr\", City: \"Anchorage\", State: \"Alaska\", ZIP: \"99508\", Country: \"USA\"}",
+    "iconSVGfile": "myicon.svg",
+    "AlertStatus": "0",
+    "tooltip": "This is the University of Alaska\\nThis is Tooltip line3",
+    "Details": "This is AK Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line5"
+  },
+  {
+    "Name": "New Delhi, India",
+    "Selected": "0",
+    "Update": "1",
+    "LatLng": "28.6362567, 77.1046916",
+    "Address": "{Address: \"\", City: \"New Delhi\", State: \"Delhi\", ZIP: \"110007\", Country: \"India\"}",
+    "iconSVGfile": "myicon.svg",
+    "AlertStatus": "0",
+    "tooltip": "This is the University of Delhi\\nThis is Tooltip line3",
+    "Details": "This is University of Delhi Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line5"
+  },
+  {
+    "Name": "Springfield, United States",
+    "Selected": "0",
+    "Update": "1",
+    "LatLng": "39.7588067, -89.6491774",
+    "Address": "{Address: \"3114 S 6th St\", City: \"Springfield\", State: \"IL\", ZIP: \"62703\", Country: \"United States\"}",
+    "iconSVGfile": "myicon.svg",
+    "AlertStatus": "0",
+    "tooltip": "This is Springfield, IL tooltip line1\\nThis is Tooltip line4",
+    "Details": "This is Springfield Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line6"
+  },
+  {
+    "Name": ", ",
+    "Selected": "0",
+    "Update": "1",
+    "LatLng": "20.77694952628591, 2.4732523999999945",
+    "Address": "{\"\"Address\"\":\"\"C83WC4V9+4W\"\",\"\"City\"\":\"\"\"\",\"\"State\"\":\"\"\"\",\"\"ZIP\"\":\"\"\"\",\"\"Country\"\":\"\"\"\"}",
+    "iconSVGfile": "myicon.svg",
+    "AlertStatus": "0",
+    "tooltip": "This is  tooltip line1\\nLocation: C83WC4V9+4W\\n",
+    "Details": "This is  Details line1\\nAddress: C83WC4V9+4W\\nCity: \\nCountry: "
+  },
+  {
+    "Name": ", Indonesia",
+    "Selected": "0",
+    "Update": "1",
+    "LatLng": "-8.5056161598073, 112.61893819999997",
+    "Address": "{\"\"Address\"\":\"\"FJV9+QH Sitiarjo\"\",\"\"City\"\":\"\"\"\",\"\"State\"\":\"\"East Java\"\",\"\"ZIP\"\":\"\"\"\",\"\"Country\"\":\"\"Indonesia\"\"}",
+    "iconSVGfile": "myicon.svg",
+    "AlertStatus": "0",
+    "tooltip": "This is  tooltip line1\\nLocation: FJV9+QH Sitiarjo\\nIndonesia",
+    "Details": "This is  Details line1\\nAddress: FJV9+QH Sitiarjo\\nCity: \\nCountry: Indonesia"
+  },
+  {
+    "Name": "Kolmasmäki, Finland",
+    "Selected": "0",
+    "Update": "1",
+    "LatLng": "63.46069322814016, 27.625334000000016",
+    "Address": "{\"\"Address\"\":\"\"FJ6G+74 Kolmasmäki\"\",\"\"City\"\":\"\"Kolmasmäki\"\",\"\"State\"\":\"\"Pohjois-Savo\"\",\"\"ZIP\"\":\"\"73100\"\",\"\"Country\"\":\"\"Finland\"\"}",
+    "iconSVGfile": "myicon.svg",
+    "AlertStatus": "2",
+    "tooltip": "This is Kolmasmäki tooltip line1\\nLocation: FJ6G+74 Kolmasmäki\\nFinland",
+    "Details": "This is Kolmasmäki Details line1\\nAddress: FJ6G+74 Kolmasmäki\\nCity: Kolmasmäki\\nCountry: Finland"
+  }
+]

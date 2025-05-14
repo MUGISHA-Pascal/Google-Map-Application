@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import GoogleMap from "../components/GoogleMap";
 import markersData from "../data/SiteMarkers.json";
 import interconnectsData from "../data/InterConnectSegments.json";
-import { SiteMarker, InterConnectSegment } from "@/types";
+import type { SiteMarker, InterConnectSegment } from "@/types";
 
 export default function Home() {
   const [markers, setMarkers] = useState<SiteMarker[]>([]);
@@ -43,6 +43,7 @@ export default function Home() {
       const dataToSave = {
         markers: updatedMarkers.map((marker) => ({
           ...marker,
+          // Ensure Address is properly formatted
           Address:
             typeof marker.Address === "string"
               ? marker.Address
@@ -81,7 +82,11 @@ export default function Home() {
       // window.location.reload();
     } catch (error) {
       console.error("Error in save process:", error);
-      alert("Failed to save data. Please try again.");
+      alert(
+        `Failed to save data: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }. Please try again.`
+      );
     }
   };
 

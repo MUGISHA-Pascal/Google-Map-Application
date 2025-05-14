@@ -1,109 +1,114 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs/promises';
-import path from 'path';
+import { type NextRequest, NextResponse } from "next/server";
+import fs from "fs/promises";
+import path from "path";
 
 export async function POST(request: NextRequest) {
   try {
-    // Parse the request body
     const { markers, interconnects } = await request.json();
-    console.log('Received data:', { markers, interconnects });
+    console.log("Received data:", { markers, interconnects });
 
     if (!markers || !interconnects) {
-      throw new Error('Invalid data: markers and interconnects are required');
+      throw new Error("Invalid data: markers and interconnects are required");
     }
 
-    // Paths to JSON files
-    const markersFilePath = path.join(process.cwd(), 'src', 'data', 'SiteMarkers.json');
-    const interconnectsFilePath = path.join(process.cwd(), 'src', 'data', 'InterConnectSegments.json');
+    const markersFilePath = path.join(
+      process.cwd(),
+      "src",
+      "data",
+      "SiteMarkers.json"
+    );
+    const interconnectsFilePath = path.join(
+      process.cwd(),
+      "src",
+      "data",
+      "InterConnectSegments.json"
+    );
 
-    // Load previous markers to detect renames
-    let previousMarkers = [];
-    try {
-      previousMarkers = JSON.parse(await fs.readFile(markersFilePath, 'utf8'));
-    } catch (e) {
-      // If file doesn't exist or can't be read, treat as empty
-      console.log(e)
-      previousMarkers = [];
-    }
+    // Format and clean markers
+    const finalMarkers = markers.map((marker: any) => {
+      let formattedAddress = marker.Address;
 
-    // Build a map of oldName -> newName for renamed markers
-    const oldToNewNameMap = new Map();
-    previousMarkers.forEach((oldMarker:any) => {
-      // Try to find a marker with the same LatLng (or other unique property)
-      const newMarker = markers.find((m:any) => m.LatLng === oldMarker.LatLng && m.Name !== oldMarker.Name);
-      if (newMarker) {
-        oldToNewNameMap.set(oldMarker.Name, newMarker.Name);
-      }
-    });
+      if (
+        typeof marker.Address === "string" &&
+        (marker.Address.includes("Address:") ||
+          marker.Address.includes("City:") ||
+          marker.Address.includes("Country:"))
+      ) {
+        try {
+          JSON.parse(marker.Address);
+        } catch {
+          const addressParts = marker.Address.split(/\\n|,/);
+          const addressObj = {
+            Address: "",
+            City: "",
+            State: "",
+            ZIP: "",
+            Country: "",
+          };
 
-    // Update all interconnectors' Source and Target fields if the marker was renamed
-    const updatedInterconnects = interconnects.map((ic:any) => {
-      let newSource = ic.Source;
-      let newTarget = ic.Target;
-      if (oldToNewNameMap.has(ic.Source)) {
-        newSource = oldToNewNameMap.get(ic.Source);
+          addressParts.forEach((part: string) => {
+            if (part.includes("Address:"))
+              addressObj.Address = part.replace("Address:", "").trim();
+            if (part.includes("City:"))
+              addressObj.City = part.replace("City:", "").trim();
+            if (part.includes("State:"))
+              addressObj.State = part.replace("State:", "").trim();
+            if (part.includes("ZIP:"))
+              addressObj.ZIP = part.replace("ZIP:", "").trim();
+            if (part.includes("Country:"))
+              addressObj.Country = part.replace("Country:", "").trim();
+          });
+
+          formattedAddress = JSON.stringify(addressObj);
+        }
       }
-      if (oldToNewNameMap.has(ic.Target)) {
-        newTarget = oldToNewNameMap.get(ic.Target);
-      }
+
       return {
-        ...ic,
-        Source: newSource,
-        Target: newTarget,
-        Update: "1"
+        ...marker,
+        Address: formattedAddress,
+        Update: "1",
       };
     });
 
-    // Prepare the data for saving
-    const finalMarkers = markers.map((marker:any) => ({
-      ...marker,
-      Update: "1" // Always set Update to "1" for saved markers
+    const finalInterconnects = interconnects.map((ic: any) => ({
+      ...ic,
+      Update: "1",
     }));
 
-    // Write the files
-    try {
-      // Write markers
-      await fs.writeFile(
-        markersFilePath,
-        JSON.stringify(finalMarkers, null, 2),
-        { encoding: 'utf8', flag: 'w' }
-      );
+    // Write new data to files (clearing old content)
+    await fs.writeFile(markersFilePath, JSON.stringify(finalMarkers, null, 2), {
+      encoding: "utf8",
+      flag: "w", // Overwrites the file
+    });
 
-      // Write interconnects
-      await fs.writeFile(
-        interconnectsFilePath,
-        JSON.stringify(updatedInterconnects, null, 2),
-        { encoding: 'utf8', flag: 'w' }
-      );
-
-      // Verify the writes
-      const verifyMarkers = JSON.parse(await fs.readFile(markersFilePath, 'utf8'));
-      const verifyInterconnects = JSON.parse(await fs.readFile(interconnectsFilePath, 'utf8'));
-
-      if (verifyMarkers.length !== finalMarkers.length || 
-          verifyInterconnects.length !== updatedInterconnects.length) {
-        throw new Error('Verification failed: File content mismatch after save');
+    await fs.writeFile(
+      interconnectsFilePath,
+      JSON.stringify(finalInterconnects, null, 2),
+      {
+        encoding: "utf8",
+        flag: "w", // Overwrites the file
       }
+    );
 
-      console.log('Files written and verified successfully');
+    console.log("Files cleared and data written successfully");
 
-      return NextResponse.json({
-        message: 'Data saved successfully',
+    return NextResponse.json(
+      {
+        message: "Data saved successfully (old data cleared)",
         markers: finalMarkers,
-        interconnects: updatedInterconnects
-      }, { status: 200 });
-
-    } catch (writeError) {
-      console.error('Error writing files:', writeError);
-      throw writeError;
-    }
-
+        interconnects: finalInterconnects,
+      },
+      { status: 200 }
+    );
   } catch (error) {
-    console.error('Error in save operation:', error);
-    return NextResponse.json({
-      message: 'Failed to save data',
-      error: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+    console.error("Error saving data:", error);
+    return NextResponse.json(
+      {
+        message: "Failed to save data",
+        error: error instanceof Error ? error.message : "Unknown error",
+      },
+      { status: 500 }
+    );
   }
 }

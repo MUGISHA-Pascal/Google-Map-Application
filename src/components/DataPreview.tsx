@@ -1,5 +1,8 @@
-import { SiteMarker, InterConnectSegment } from "@/types";
-import React, { useState } from "react";
+"use client";
+
+import type { SiteMarker, InterConnectSegment } from "@/types";
+import type React from "react";
+import { useState } from "react";
 import { useGeocode } from "@/hooks/useGeocode";
 
 interface PopupDataViewProps {
@@ -25,115 +28,90 @@ const MarkerCard: React.FC<{
 
   return (
     <div
-      style={{
-        border: "1px solid #e9ecef",
-        borderRadius: "8px",
-        overflow: "hidden",
-        transition: "transform 0.2s, box-shadow 0.2s",
-        boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
-      }}
+      className="border border-gray-200 rounded-lg overflow-hidden transition-all hover:shadow-md bg-white"
+      style={{ height: "100%" }}
     >
-      <div
-        style={{
-          padding: "12px 16px",
-          backgroundColor: "#f8f9fa",
-          borderBottom: "1px solid #e9ecef",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <h4
-          style={{
-            margin: 0,
-            fontSize: "16px",
-            color: "#212529",
-            fontWeight: "600",
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-          }}
-        >
+      <div className="px-4 py-3 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
+        <h4 className="m-0 text-base font-semibold text-gray-800 flex items-center gap-2">
           <span
-            style={{
-              display: "inline-block",
-              width: "10px",
-              height: "10px",
-              backgroundColor: marker.iconColor || "#0d6efd",
-              borderRadius: "50%",
-            }}
+            className="inline-block w-3 h-3 rounded-full"
+            style={{ backgroundColor: marker.iconColor || "#0d6efd" }}
           ></span>
           {marker.Name || `Marker ${index + 1}`}
         </h4>
         {hasChanges && (
-          <span
-            style={{
-              padding: "3px 8px",
-              borderRadius: "4px",
-              fontSize: "12px",
-              fontWeight: "500",
-              backgroundColor: "#ffc107",
-              color: "#212529",
-            }}
-          >
+          <span className="px-2 py-1 rounded text-xs font-medium bg-amber-100 text-amber-800">
             Modified
           </span>
         )}
       </div>
-      <div style={{ padding: "16px" }}>
-        <div style={{ marginBottom: "12px" }}>
-          <div
-            style={{
-              fontSize: "13px",
-              color: "#6c757d",
-              marginBottom: "4px",
-            }}
-          >
-            Location
-          </div>
-          <div
-            style={{
-              fontSize: "14px",
-              padding: "6px 10px",
-              backgroundColor: "#f1f3f5",
-              borderRadius: "4px",
-            }}
-          >
+      <div className="p-4">
+        <div className="mb-4">
+          <div className="text-sm text-gray-500 mb-1">Location</div>
+          <div className="text-sm p-2 bg-gray-50 rounded-md">
             {hasChanges ? (
               <div>
-                <div style={{ color: "#dc3545", marginBottom: "4px" }}>
-                  Previous Location:
-                  <div style={{ marginLeft: "12px", marginTop: "4px" }}>
+                <div className="text-red-600 mb-2">
+                  <div className="font-medium mb-1">Previous Location:</div>
+                  <div className="ml-3 mt-1">
                     {previousLoading ? (
-                      <div>Loading address...</div>
+                      <div className="text-gray-500">Loading address...</div>
                     ) : previousData ? (
                       <>
-                        <div>Country: {previousData.country}</div>
-                        <div>City: {previousData.city}</div>
-                        <div style={{ marginTop: "4px", color: "#666" }}>
+                        <div className="mb-0.5">
+                          Country: {previousData.country}
+                        </div>
+                        <div className="mb-0.5">City: {previousData.city}</div>
+                        {previousData.street && (
+                          <div className="mb-0.5">
+                            Address: {previousData.street}
+                          </div>
+                        )}
+                        <div className="mt-1 text-gray-500 font-mono text-xs">
                           Coordinates: {previousState?.LatLng}
                         </div>
                       </>
                     ) : (
-                      <div>Coordinates: {previousState?.LatLng}</div>
+                      <div className="text-gray-500 font-mono text-xs">
+                        Coordinates: {previousState?.LatLng}
+                      </div>
                     )}
                   </div>
                 </div>
-                <div style={{ color: "#28a745" }}>
-                  Current Location:
-                  <div style={{ marginLeft: "12px", marginTop: "4px" }}>
+                <div className="text-green-600">
+                  <div className="font-medium mb-1">Current Location:</div>
+                  <div className="ml-3 mt-1">
                     {currentLoading ? (
-                      <div>Loading address...</div>
+                      <div className="text-gray-500">Loading address...</div>
                     ) : currentData ? (
                       <>
-                        <div>Country: {currentData.country}</div>
-                        <div>City: {currentData.city}</div>
-                        <div style={{ marginTop: "4px", color: "#666" }}>
+                        <div className="mb-0.5">
+                          Country: {currentData.country}
+                        </div>
+                        <div className="mb-0.5">City: {currentData.city}</div>
+                        {currentData.street && (
+                          <div className="mb-0.5">
+                            Address: {currentData.street}
+                          </div>
+                        )}
+                        {currentData.state && (
+                          <div className="mb-0.5">
+                            State/Region: {currentData.state}
+                          </div>
+                        )}
+                        {currentData.postalCode && (
+                          <div className="mb-0.5">
+                            Postal Code: {currentData.postalCode}
+                          </div>
+                        )}
+                        <div className="mt-1 text-gray-500 font-mono text-xs">
                           Coordinates: {marker.LatLng}
                         </div>
                       </>
                     ) : (
-                      <div>Coordinates: {marker.LatLng}</div>
+                      <div className="text-gray-500 font-mono text-xs">
+                        Coordinates: {marker.LatLng}
+                      </div>
                     )}
                   </div>
                 </div>
@@ -141,17 +119,34 @@ const MarkerCard: React.FC<{
             ) : (
               <div>
                 {currentLoading ? (
-                  <div>Loading address...</div>
+                  <div className="text-gray-500">Loading address...</div>
                 ) : currentData ? (
                   <>
-                    <div>Country: {currentData.country}</div>
-                    <div>City: {currentData.city}</div>
-                    <div style={{ marginTop: "4px", color: "#666" }}>
+                    <div className="mb-0.5">Country: {currentData.country}</div>
+                    <div className="mb-0.5">City: {currentData.city}</div>
+                    {currentData.street && (
+                      <div className="mb-0.5">
+                        Address: {currentData.street}
+                      </div>
+                    )}
+                    {currentData.state && (
+                      <div className="mb-0.5">
+                        State/Region: {currentData.state}
+                      </div>
+                    )}
+                    {currentData.postalCode && (
+                      <div className="mb-0.5">
+                        Postal Code: {currentData.postalCode}
+                      </div>
+                    )}
+                    <div className="mt-1 text-gray-500 font-mono text-xs">
                       Coordinates: {marker.LatLng}
                     </div>
                   </>
                 ) : (
-                  <div>Coordinates: {marker.LatLng}</div>
+                  <div className="text-gray-500 font-mono text-xs">
+                    Coordinates: {marker.LatLng}
+                  </div>
                 )}
               </div>
             )}
@@ -159,52 +154,28 @@ const MarkerCard: React.FC<{
         </div>
 
         {marker.tooltip && (
-          <div style={{ marginBottom: "12px" }}>
-            <div
-              style={{
-                fontSize: "13px",
-                color: "#6c757d",
-                marginBottom: "4px",
-              }}
-            >
-              Tooltip
-            </div>
-            <div style={{ fontSize: "14px" }}>
-              {marker.tooltip.replace(/\\n/g, " ")}
+          <div className="mb-4">
+            <div className="text-sm text-gray-500 mb-1">Tooltip</div>
+            <div className="text-sm bg-gray-50 p-2 rounded-md whitespace-pre-wrap">
+              {marker.tooltip.replace(/\\n/g, "\n")}
             </div>
           </div>
         )}
 
-        {marker.Address && (
-          <div>
-            <div
-              style={{
-                fontSize: "13px",
-                color: "#6c757d",
-                marginBottom: "4px",
-              }}
-            >
-              Address
+        {marker.Details && (
+          <div className="mb-4">
+            <div className="text-sm text-gray-500 mb-1">Details</div>
+            <div className="text-sm bg-gray-50 p-2 rounded-md whitespace-pre-wrap">
+              {marker.Details.replace(/\\n/g, "\n")}
             </div>
-            <div style={{ fontSize: "14px" }}>
-              {typeof marker.Address === "string" &&
-              marker.Address.includes("Address") ? (
-                <>
-                  <div>Previous: {previousState?.LatLng}</div>
-                  <div>Current: {marker.LatLng}</div>
-                  {currentData && (
-                    <div style={{ marginTop: "8px" }}>
-                      <div>Country: {currentData.country}</div>
-                      <div>City: {currentData.city}</div>
-                      <div style={{ marginTop: "4px", color: "#666" }}>
-                        Coordinates: {marker.LatLng}
-                      </div>
-                    </div>
-                  )}
-                </>
-              ) : (
-                marker.Address
-              )}
+          </div>
+        )}
+
+        {marker.Address && typeof marker.Address === "string" && (
+          <div>
+            <div className="text-sm text-gray-500 mb-1">Address Data</div>
+            <div className="text-sm bg-gray-50 p-2 rounded-md overflow-auto max-h-32 font-mono text-xs">
+              {marker.Address}
             </div>
           </div>
         )}
@@ -216,133 +187,110 @@ const MarkerCard: React.FC<{
 const InterconnectCard: React.FC<{
   interconnect: InterConnectSegment;
   index: number;
-}> = ({ interconnect, index }) => {
+  markers: SiteMarker[];
+}> = ({ interconnect, index, markers }) => {
+  // Find source and target markers to display their locations
+  const sourceMarker = markers.find((m) => m.Name === interconnect.Source);
+  const targetMarker = markers.find((m) => m.Name === interconnect.Target);
+
   return (
     <div
-      style={{
-        border: "1px solid #e9ecef",
-        borderRadius: "8px",
-        overflow: "hidden",
-        transition: "transform 0.2s, box-shadow 0.2s",
-        boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
-      }}
+      className="border border-gray-200 rounded-lg overflow-hidden transition-all hover:shadow-md bg-white"
+      style={{ height: "100%" }}
     >
-      <div
-        style={{
-          padding: "12px 16px",
-          backgroundColor: "#f8f9fa",
-          borderBottom: "1px solid #e9ecef",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <h4
-          style={{
-            margin: 0,
-            fontSize: "16px",
-            color: "#212529",
-            fontWeight: "600",
-          }}
-        >
+      <div className="px-4 py-3 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
+        <h4 className="m-0 text-base font-semibold text-gray-800">
           {interconnect.Name || `Interconnect ${index + 1}`}
         </h4>
         {interconnect.Update === "1" && (
-          <span
-            style={{
-              padding: "3px 8px",
-              borderRadius: "4px",
-              fontSize: "12px",
-              fontWeight: "500",
-              backgroundColor: "#ffc107",
-              color: "#212529",
-            }}
-          >
+          <span className="px-2 py-1 rounded text-xs font-medium bg-amber-100 text-amber-800">
             Modified
           </span>
         )}
       </div>
-      <div style={{ padding: "16px" }}>
-        <div style={{ marginBottom: "12px" }}>
-          <div
-            style={{
-              fontSize: "13px",
-              color: "#6c757d",
-              marginBottom: "4px",
-            }}
-          >
-            Line Color
+      <div className="p-4">
+        <div className="mb-4">
+          <div className="text-sm text-gray-500 mb-1">Connection</div>
+          <div className="text-sm p-2 bg-gray-50 rounded-md flex items-center gap-2">
+            <span className="font-medium">{interconnect.Source}</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M5 12h14"></path>
+              <path d="m12 5 7 7-7 7"></path>
+            </svg>
+            <span className="font-medium">{interconnect.Target}</span>
           </div>
-          <div
-            style={{
-              fontSize: "14px",
-              padding: "6px 10px",
-              backgroundColor: "#f1f3f5",
-              borderRadius: "4px",
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-            }}
-          >
+        </div>
+
+        {(sourceMarker || targetMarker) && (
+          <div className="mb-4">
+            <div className="text-sm text-gray-500 mb-1">Endpoints</div>
+            <div className="text-sm p-2 bg-gray-50 rounded-md">
+              {sourceMarker && (
+                <div className="mb-2">
+                  <div className="font-medium">
+                    Source: {interconnect.Source}
+                  </div>
+                  <div className="ml-3 text-xs text-gray-600 mt-1">
+                    Coordinates: {sourceMarker.LatLng}
+                  </div>
+                </div>
+              )}
+              {targetMarker && (
+                <div>
+                  <div className="font-medium">
+                    Target: {interconnect.Target}
+                  </div>
+                  <div className="ml-3 text-xs text-gray-600 mt-1">
+                    Coordinates: {targetMarker.LatLng}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        <div className="mb-4">
+          <div className="text-sm text-gray-500 mb-1">Line Style</div>
+          <div className="text-sm p-2 bg-gray-50 rounded-md flex items-center gap-2">
             <span
-              style={{
-                display: "inline-block",
-                width: "16px",
-                height: "16px",
-                backgroundColor: interconnect.LineColor || "#000",
-                borderRadius: "4px",
-              }}
+              className="inline-block w-4 h-4 rounded"
+              style={{ backgroundColor: interconnect.LineColor || "#000" }}
             ></span>
-            {interconnect.LineColor || "Default"}
+            <span>{interconnect.LineColor || "Default"}</span>
+            <span className="mx-2">|</span>
+            <span>{interconnect.LineWidthpx || "1"}px</span>
+            <span className="mx-2">|</span>
+            <span>{interconnect.LineType || "Solid"}</span>
           </div>
         </div>
 
-        <div style={{ marginBottom: "12px" }}>
-          <div
-            style={{
-              fontSize: "13px",
-              color: "#6c757d",
-              marginBottom: "4px",
-            }}
-          >
-            Line Width
+        {interconnect.Desc && (
+          <div className="mb-4">
+            <div className="text-sm text-gray-500 mb-1">Description</div>
+            <div className="text-sm p-2 bg-gray-50 rounded-md">
+              {interconnect.Desc}
+            </div>
           </div>
-          <div
-            style={{
-              fontSize: "14px",
-              padding: "6px 10px",
-              backgroundColor: "#f1f3f5",
-              borderRadius: "4px",
-            }}
-          >
-            {interconnect.LineWidthpx || "1"}px
-          </div>
-        </div>
+        )}
 
-        <div>
-          <div
-            style={{
-              fontSize: "13px",
-              color: "#6c757d",
-              marginBottom: "4px",
-            }}
-          >
-            Waypoints
+        {interconnect.WaypointLatLngArray && (
+          <div>
+            <div className="text-sm text-gray-500 mb-1">Waypoints</div>
+            <div className="text-sm p-2 bg-gray-50 rounded-md font-mono text-xs overflow-auto max-h-24">
+              {interconnect.WaypointLatLngArray}
+            </div>
           </div>
-          <div
-            style={{
-              fontSize: "14px",
-              padding: "6px 10px",
-              backgroundColor: "#f1f3f5",
-              borderRadius: "4px",
-              fontFamily: "monospace",
-              maxHeight: "80px",
-              overflowY: "auto",
-            }}
-          >
-            {interconnect.WaypointLatLngArray || "No waypoints"}
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );
@@ -355,227 +303,178 @@ const DataPreview: React.FC<PopupDataViewProps> = ({
   onClose,
   onSave,
 }) => {
-  const [activeTabIndex, setActiveTabIndex] = useState(0);
   const [dataType, setDataType] = useState<"markers" | "interconnects">(
     "markers"
   );
-  console.log(activeTabIndex,setActiveTabIndex);
   const [searchQuery, setSearchQuery] = useState("");
+  const [filterChanged, setFilterChanged] = useState(false);
 
   const getPreviousMarkerState = (markerName: string) => {
     return previousMarkers.find((m) => m.Name === markerName);
   };
 
-  const filteredMarkers = markers.filter((marker) =>
-    marker.Name?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredMarkers = markers.filter((marker) => {
+    if (!searchQuery)
+      return !filterChanged || getPreviousMarkerState(marker.Name);
+    return marker.Name?.toLowerCase().includes(searchQuery.toLowerCase());
+  });
 
-  const filteredInterconnects = interconnects.filter((ic) =>
-    ic.Name?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const currentData =
-    dataType === "markers" ? filteredMarkers : filteredInterconnects;
+  const filteredInterconnects = interconnects.filter((ic) => {
+    if (!searchQuery) return !filterChanged || ic.Update === "1";
+    return (
+      ic.Name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      ic.Source?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      ic.Target?.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  });
 
   return (
-    <div
-      style={{
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        width: "80%",
-        maxHeight: "85%",
-        backgroundColor: "white",
-        padding: "0",
-        border: "1px solid #ccc",
-        borderRadius: "12px",
-        boxShadow: "0 6px 24px rgba(0, 0, 0, 0.2)",
-        zIndex: 1000,
-        overflow: "hidden",
-        fontFamily: "Arial, sans-serif",
-      }}
-    >
-      <div
-        style={{
-          backgroundColor: "#f8f9fa",
-          borderBottom: "1px solid #e9ecef",
-          borderTopLeftRadius: "12px",
-          borderTopRightRadius: "12px",
-          padding: "16px 20px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <h3 style={{ margin: 0, color: "#333", fontSize: "18px" }}>
-          Preview Changes
-        </h3>
-        <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-          <input
-            type="text"
-            placeholder="Search..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            style={{
-              padding: "8px 12px",
-              border: "1px solid #ced4da",
-              borderRadius: "4px",
-              fontSize: "14px",
-              width: "200px",
-            }}
-          />
+    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+      <div className="bg-white rounded-xl shadow-2xl w-11/12 max-w-6xl max-h-[90vh] flex flex-col overflow-hidden">
+        {/* Header */}
+        <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-white sticky top-0 z-10">
+          <h3 className="text-xl font-semibold text-gray-800">
+            Preview Changes
+          </h3>
+          <div className="flex gap-3 items-center">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="px-3 py-2 border border-gray-300 rounded-md text-sm w-64 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+              <svg
+                className="absolute right-2 top-2.5 text-gray-400"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </svg>
+            </div>
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="show-changed"
+                checked={filterChanged}
+                onChange={(e) => setFilterChanged(e.target.checked)}
+                className="rounded text-blue-500 focus:ring-blue-500"
+              />
+              <label htmlFor="show-changed" className="text-sm text-gray-600">
+                Show only changed items
+              </label>
+            </div>
+            <button
+              onClick={onClose}
+              className="text-gray-500 hover:text-gray-700 focus:outline-none"
+              aria-label="Close"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M18 6 6 18"></path>
+                <path d="m6 6 12 12"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Tabs */}
+        <div className="flex border-b border-gray-200">
           <button
-            onClick={onClose}
-            style={{
-              background: "transparent",
-              border: "none",
-              cursor: "pointer",
-              fontSize: "18px",
-              color: "#666",
-            }}
-            aria-label="Close"
+            onClick={() => setDataType("markers")}
+            className={`flex-1 py-3 px-4 text-center focus:outline-none ${
+              dataType === "markers"
+                ? "text-blue-600 font-medium border-b-2 border-blue-500 bg-white"
+                : "text-gray-600 hover:text-gray-800 bg-gray-50 hover:bg-gray-100"
+            }`}
           >
-            ✕
+            Markers ({filteredMarkers.length})
+          </button>
+          <button
+            onClick={() => setDataType("interconnects")}
+            className={`flex-1 py-3 px-4 text-center focus:outline-none ${
+              dataType === "interconnects"
+                ? "text-blue-600 font-medium border-b-2 border-blue-500 bg-white"
+                : "text-gray-600 hover:text-gray-800 bg-gray-50 hover:bg-gray-100"
+            }`}
+          >
+            Interconnects ({filteredInterconnects.length})
           </button>
         </div>
-      </div>
 
-      <div style={{ display: "flex", borderBottom: "1px solid #e9ecef" }}>
-        <button
-          onClick={() => setDataType("markers")}
-          style={{
-            padding: "12px 16px",
-            background: dataType === "markers" ? "#fff" : "#f8f9fa",
-            border: "none",
-            borderBottom:
-              dataType === "markers"
-                ? "2px solid #0d6efd"
-                : "2px solid transparent",
-            color: dataType === "markers" ? "#0d6efd" : "#666",
-            fontWeight: dataType === "markers" ? "600" : "normal",
-            cursor: "pointer",
-            flex: "1",
-            textAlign: "center",
-            fontSize: "14px",
-          }}
-        >
-          Markers ({markers.length})
-        </button>
-        <button
-          onClick={() => setDataType("interconnects")}
-          style={{
-            padding: "12px 16px",
-            background: dataType === "interconnects" ? "#fff" : "#f8f9fa",
-            border: "none",
-            borderBottom:
-              dataType === "interconnects"
-                ? "2px solid #0d6efd"
-                : "2px solid transparent",
-            color: dataType === "interconnects" ? "#0d6efd" : "#666",
-            fontWeight: dataType === "interconnects" ? "600" : "normal",
-            cursor: "pointer",
-            flex: "1",
-            textAlign: "center",
-            fontSize: "14px",
-          }}
-        >
-          Interconnects ({interconnects.length})
-        </button>
-      </div>
+        {/* Content */}
+        <div className="p-6 overflow-y-auto flex-grow">
+          {dataType === "markers" && filteredMarkers.length === 0 && (
+            <div className="text-center py-12 text-gray-500">
+              No markers match your search criteria
+            </div>
+          )}
 
-      <div
-        style={{
-          padding: "20px",
-          overflowY: "auto",
-          maxHeight: "calc(85vh - 118px)",
-        }}
-      >
-        {currentData.length === 0 && (
-          <div
-            style={{ textAlign: "center", padding: "40px 0", color: "#666" }}
+          {dataType === "interconnects" &&
+            filteredInterconnects.length === 0 && (
+              <div className="text-center py-12 text-gray-500">
+                No interconnects match your search criteria
+              </div>
+            )}
+
+          {dataType === "markers" && filteredMarkers.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {filteredMarkers.map((marker, index) => (
+                <MarkerCard
+                  key={marker.Name || index}
+                  marker={marker}
+                  previousState={getPreviousMarkerState(marker.Name)}
+                  index={index}
+                />
+              ))}
+            </div>
+          )}
+
+          {dataType === "interconnects" && filteredInterconnects.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {filteredInterconnects.map((interconnect, index) => (
+                <InterconnectCard
+                  key={`${interconnect.Source}-${interconnect.Target}-${index}`}
+                  interconnect={interconnect}
+                  index={index}
+                  markers={markers}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div className="px-6 py-4 border-t border-gray-200 flex justify-end gap-3 bg-gray-50">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors"
           >
-            {dataType === "markers"
-              ? "No markers available"
-              : "No interconnects available"}
-          </div>
-        )}
-
-        {dataType === "markers" && filteredMarkers.length > 0 && (
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-              gap: "16px",
-            }}
+            Cancel
+          </button>
+          <button
+            onClick={onSave}
+            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors"
           >
-            {filteredMarkers.map((marker, index) => (
-              <MarkerCard
-                key={index}
-                marker={marker}
-                previousState={getPreviousMarkerState(marker.Name)}
-                index={index}
-              />
-            ))}
-          </div>
-        )}
-
-        {dataType === "interconnects" && filteredInterconnects.length > 0 && (
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-              gap: "16px",
-            }}
-          >
-            {filteredInterconnects.map((interconnect, index) => (
-              <InterconnectCard
-                key={index}
-                interconnect={interconnect}
-                index={index}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div
-        style={{
-          padding: "16px 20px",
-          borderTop: "1px solid #e9ecef",
-          display: "flex",
-          justifyContent: "flex-end",
-          gap: "12px",
-        }}
-      >
-        <button
-          onClick={onClose}
-          style={{
-            padding: "8px 16px",
-            backgroundColor: "#6c757d",
-            color: "white",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-            fontSize: "14px",
-          }}
-        >
-          Cancel
-        </button>
-        <button
-          onClick={onSave}
-          style={{
-            padding: "8px 16px",
-            backgroundColor: "#28a745",
-            color: "white",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-            fontSize: "14px",
-          }}
-        >
-          Save Changes
-        </button>
+            Save Changes
+          </button>
+        </div>
       </div>
     </div>
   );

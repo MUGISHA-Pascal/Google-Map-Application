@@ -1,3 +1,5 @@
+"use client";
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -8,7 +10,7 @@ import {
   parseLatLng,
   reverseGeocode,
 } from "@/app/utils/MapUtils";
-import { SiteMarker, InterConnectSegment, Address } from "@/types";
+import type { SiteMarker, InterConnectSegment, Address } from "@/types";
 import html2canvas from "html2canvas";
 import DataPreview from "./DataPreview";
 
@@ -60,6 +62,7 @@ export default function GoogleMap({
   const [previousMarkerStates, setPreviousMarkerStates] = useState<
     Map<string, SiteMarker>
   >(new Map());
+  const [isLoading, setIsLoading] = useState(false);
 
   // Refs to store map objects
   const markersRef = useRef<
@@ -115,7 +118,10 @@ export default function GoogleMap({
       if (infoWindowRef.current) {
         infoWindowRef.current.close();
       }
-      infoWindowRef.current = new google.maps.InfoWindow();
+      infoWindowRef.current = new google.maps.InfoWindow({
+        maxWidth: 320,
+        disableAutoPan: false,
+      });
 
       // Set initial bounds based on markers
       if (markers.length > 0) {
@@ -245,6 +251,82 @@ export default function GoogleMap({
     });
   };
 
+  // Function to create a professional tooltip for a marker
+  const createProfessionalTooltip = (addressInfo: any, markerName: string) => {
+    // Create a more descriptive tooltip with available information
+    const tooltipLines = [];
+
+    // Add location name
+    if (addressInfo.city && addressInfo.country) {
+      tooltipLines.push(
+        `Location: ${addressInfo.city}, ${addressInfo.country}`
+      );
+    } else if (addressInfo.city) {
+      tooltipLines.push(`Location: ${addressInfo.city}`);
+    } else if (addressInfo.country) {
+      tooltipLines.push(`Location: ${addressInfo.country}`);
+    } else {
+      tooltipLines.push(`Location: ${markerName}`);
+    }
+
+    // Add street address if available
+    if (addressInfo.street) {
+      tooltipLines.push(`Address: ${addressInfo.street}`);
+    }
+
+    // Add state/region if available
+    if (addressInfo.state) {
+      tooltipLines.push(`Region: ${addressInfo.state}`);
+    }
+
+    // Add postal code if available
+    if (addressInfo.postalCode) {
+      tooltipLines.push(`Postal Code: ${addressInfo.postalCode}`);
+    }
+
+    return tooltipLines.join("\\n");
+  };
+
+  // Function to create professional details for a marker
+  const createProfessionalDetails = (addressInfo: any, markerName: string) => {
+    // Create more detailed information
+    const detailLines = [];
+
+    // Add a title line
+    if (addressInfo.city && addressInfo.country) {
+      detailLines.push(`${addressInfo.city}, ${addressInfo.country} Details`);
+    } else {
+      detailLines.push(`${markerName} Details`);
+    }
+
+    // Add full address
+    if (addressInfo.street) {
+      detailLines.push(`Address: ${addressInfo.street}`);
+    }
+
+    // Add city
+    if (addressInfo.city) {
+      detailLines.push(`City: ${addressInfo.city}`);
+    }
+
+    // Add state/region
+    if (addressInfo.state) {
+      detailLines.push(`State/Region: ${addressInfo.state}`);
+    }
+
+    // Add postal code
+    if (addressInfo.postalCode) {
+      detailLines.push(`Postal Code: ${addressInfo.postalCode}`);
+    }
+
+    // Add country
+    if (addressInfo.country) {
+      detailLines.push(`Country: ${addressInfo.country}`);
+    }
+
+    return detailLines.join("\\n");
+  };
+
   // Process and update markers
   useEffect(() => {
     if (!map) return;
@@ -253,8 +335,8 @@ export default function GoogleMap({
     processedMarkersRef.current = [];
 
     // Declare listener variables
-  const  clickListener: google.maps.MapsEventListener | null = null;
-  const mouseoverListener: google.maps.MapsEventListener | null = null;
+    const clickListener: google.maps.MapsEventListener | null = null;
+    const mouseoverListener: google.maps.MapsEventListener | null = null;
 
     // Remove existing markers
     markersRef.current.forEach((marker) => {
@@ -264,6 +346,7 @@ export default function GoogleMap({
 
     // Create new markers
     const processMarkers = async () => {
+      const google = await loader.load();
       const tempMarkers: SiteMarker[] = [];
 
       for (const marker of updatedMarkers) {
@@ -274,7 +357,7 @@ export default function GoogleMap({
           console.log("Position is not there");
           try {
             // Clean and fix the Address string
-            let cleanedAddress = marker.Address.replace(/\"\"/g, '"').trim();
+            let cleanedAddress = marker.Address.replace(/""/g, '"').trim();
 
             // Add double quotes around property names
             cleanedAddress = cleanedAddress.replace(/(\w+):/g, '"$1":');
@@ -330,16 +413,50 @@ export default function GoogleMap({
               infoWindowRef.current?.close();
             });
 
-            mouseoverListener = mapMarker.addListener("mouseover", () => {
-              const content = `
-                <div style="font-family: Arial, sans-serif;">
-                  <strong>${marker.Name}</strong><br>
-                  ${
-                    marker.tooltip ? marker.tooltip.replace(/\\n/g, "<br>") : ""
-                  }
-                </div>
-              `;
-              infoWindowRef.current?.setContent(content);
+            mouseoverListener = mapMarker.addListener("mouseover", async () => {
+              // Get current position for fresh data
+              const position = mapMarker.position;
+              if (!position) return;
+
+              const lat =
+                typeof position.lat === "function"
+                  ? position.lat()
+                  : position.lat;
+              const lng =
+                typeof position.lng === "function"
+                  ? position.lng()
+                  : position.lng;
+
+              // Create a professional tooltip with current location data
+              let tooltipContent = "";
+
+              if (marker.tooltip) {
+                // Use existing tooltip
+                tooltipContent = `
+                  <div style="font-family: Arial, sans-serif; padding: 8px;">
+                    <div style="font-weight: bold; font-size: 16px; margin-bottom: 8px; color: #333;">${
+                      marker.Name
+                    }</div>
+                    <div style="font-size: 14px; color: #555;">
+                      ${marker.tooltip.replace(/\\n/g, "<br>")}
+                    </div>
+                  </div>
+                `;
+              } else {
+                // Create a basic tooltip
+                tooltipContent = `
+                  <div style="font-family: Arial, sans-serif; padding: 8px;">
+                    <div style="font-weight: bold; font-size: 16px; margin-bottom: 8px; color: #333;">${
+                      marker.Name
+                    }</div>
+                    <div style="font-size: 14px; color: #555;">
+                      Coordinates: ${lat.toFixed(6)}, ${lng.toFixed(6)}
+                    </div>
+                  </div>
+                `;
+              }
+
+              infoWindowRef.current?.setContent(tooltipContent);
               infoWindowRef.current?.open(map, mapMarker);
             });
 
@@ -367,14 +484,37 @@ export default function GoogleMap({
 
               const locationString = locationParts.join(", ");
 
-              // Format the content
+              // Format the content with a more professional look
               const content = `
-                <div style="font-family: Arial, sans-serif;">
-                  <strong>Location:</strong><br>
-                  <span style="color: red">${locationString}</span>
-                  <br><br>
-                  <strong>Coordinates:</strong><br>
-                  <span style="color: red">${lat}, ${lng}</span>
+                <div style="font-family: Arial, sans-serif; padding: 12px; max-width: 300px;">
+                  <div style="font-weight: bold; font-size: 16px; margin-bottom: 10px; color: #333; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                    ${marker.Name}
+                  </div>
+                  
+                  <div style="margin-bottom: 12px;">
+                    <div style="font-weight: 600; margin-bottom: 4px; color: #555;">Location:</div>
+                    <div style="color: #333; font-size: 14px;">${
+                      locationString || "Unknown location"
+                    }</div>
+                  </div>
+                  
+                  ${
+                    addressInfo.street
+                      ? `
+                    <div style="margin-bottom: 12px;">
+                      <div style="font-weight: 600; margin-bottom: 4px; color: #555;">Address:</div>
+                      <div style="color: #333; font-size: 14px;">${addressInfo.street}</div>
+                    </div>
+                  `
+                      : ""
+                  }
+                  
+                  <div style="margin-bottom: 8px;">
+                    <div style="font-weight: 600; margin-bottom: 4px; color: #555;">Coordinates:</div>
+                    <div style="color: #333; font-size: 14px; font-family: monospace;">${lat.toFixed(
+                      6
+                    )}, ${lng.toFixed(6)}</div>
+                  </div>
                 </div>
               `;
 
@@ -388,7 +528,22 @@ export default function GoogleMap({
           addMarkerListeners();
 
           if (editMode) {
-            // Handle drag events
+            // Enhanced drag event handler with loading indicator and professional formatting
+            mapMarker.addListener("dragstart", () => {
+              // Show loading indicator on the marker or nearby
+              setIsLoading(true);
+
+              // Store the previous state if not already stored
+              if (!previousMarkerStates.has(marker.Name)) {
+                console.log("Storing previous state for:", marker.Name);
+                setPreviousMarkerStates((prev) => {
+                  const newMap = new Map(prev);
+                  newMap.set(marker.Name, { ...marker });
+                  return newMap;
+                });
+              }
+            });
+
             mapMarker.addListener(
               "dragend",
               async (event: google.maps.MapMouseEvent) => {
@@ -396,128 +551,191 @@ export default function GoogleMap({
                   const newLat = event.latLng.lat();
                   const newLng = event.latLng.lng();
 
-                  // Get detailed address information for the new location
-                  const addressInfo = await reverseGeocode({
-                    lat: newLat,
-                    lng: newLng,
-                  });
-                  // Only use new name if both city and country are present
-                  const newName =
-                    addressInfo.city && addressInfo.country
-                      ? `${addressInfo.city}, ${addressInfo.country}`
-                      : marker.Name; // fallback to old name if geocoding fails
+                  try {
+                    // Show loading indicator
+                    const loadingContent = `
+                    <div style="font-family: Arial, sans-serif; padding: 12px; text-align: center;">
+                      <div style="margin-bottom: 8px; font-weight: bold;">Updating location data...</div>
+                      <div style="display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(0,0,0,0.1); border-radius: 50%; border-top-color: #3498db; animation: spin 1s linear infinite;"></div>
+                      <style>
+                        @keyframes spin {
+                          0% { transform: rotate(0deg); }
+                          100% { transform: rotate(360deg); }
+                        }
+                      </style>
+                    </div>
+                  `;
+                    infoWindowRef.current?.setContent(loadingContent);
+                    infoWindowRef.current?.open(map, mapMarker);
 
-                  // Create formatted address string
-                  const formattedAddress = JSON.stringify({
-                    Address: addressInfo.street || "",
-                    City: addressInfo.city || "",
-                    State: addressInfo.state || "",
-                    ZIP: addressInfo.postalCode || "",
-                    Country: addressInfo.country || "",
-                  }).replace(/"/g, '""');
-
-                  // Create new tooltip and details
-                  const newTooltip = `This is ${
-                    addressInfo.city || marker.Name
-                  } tooltip line1\\nLocation: ${
-                    addressInfo.street || addressInfo.city || marker.Name
-                  }\\n${addressInfo.country || ""}`;
-                  const newDetails = `This is ${
-                    addressInfo.city || marker.Name
-                  } Details line1\\nAddress: ${
-                    addressInfo.street || ""
-                  }\\nCity: ${addressInfo.city || ""}\\nCountry: ${
-                    addressInfo.country || ""
-                  }`;
-
-                  console.log("Marker dragged:", marker.Name);
-                  console.log("New position:", { lat: newLat, lng: newLng });
-                  console.log("New name:", newName);
-
-                  // Store the previous state if not already stored
-                  if (!previousMarkerStates.has(marker.Name)) {
-                    console.log("Storing previous state for:", marker.Name);
-                    setPreviousMarkerStates((prev) => {
-                      const newMap = new Map(prev);
-                      newMap.set(marker.Name, { ...marker });
-                      return newMap;
+                    // Get detailed address information for the new location
+                    const addressInfo = await reverseGeocode({
+                      lat: newLat,
+                      lng: newLng,
                     });
-                  }
 
-                  // Only update marker and interconnectors if newName is valid (not empty)
-                  if (newName && newName.trim() !== "") {
-                    // Remove the old marker and add the new one
-                    setUpdatedMarkers((prevMarkers) => {
-                      // Remove the old marker
-                      const filtered = prevMarkers.filter(
-                        (m) => m.Name !== marker.Name
+                    // Create a professional name for the marker based on location
+                    let newName = marker.Name;
+
+                    // Only update the name if we have good location data and it's significantly different
+                    // This prevents unnecessary name changes for small movements
+                    if (addressInfo.city && addressInfo.country) {
+                      // Check if the location has changed significantly
+                      const oldNameParts = marker.Name.split(",").map((part) =>
+                        part.trim().toLowerCase()
                       );
-                      // Add the new marker
-                      return [
-                        ...filtered,
-                        {
-                          ...marker,
-                          Name: newName,
-                          LatLng: `${newLat}, ${newLng}`,
-                          Address: formattedAddress,
-                          tooltip: newTooltip,
-                          Details: newDetails,
-                          Update: "1",
-                        },
-                      ];
+                      const newCityCountry = `${addressInfo.city}, ${addressInfo.country}`;
+
+                      // If the current name doesn't contain the new city and country, update it
+                      if (
+                        !oldNameParts.includes(
+                          addressInfo.city.toLowerCase()
+                        ) &&
+                        !oldNameParts.includes(
+                          addressInfo.country.toLowerCase()
+                        )
+                      ) {
+                        newName = newCityCountry;
+                      }
+                    }
+
+                    // Create properly formatted address string
+                    const formattedAddress = JSON.stringify({
+                      Address: addressInfo.street || "",
+                      City: addressInfo.city || "",
+                      State: addressInfo.state || "",
+                      ZIP: addressInfo.postalCode || "",
+                      Country: addressInfo.country || "",
                     });
 
-                    // Add to dragged markers set
-                    setDraggedMarkers((prev) => new Set([...prev, newName]));
-
-                    // Update all interconnectors referencing the old name to use the new name, but do NOT delete any interconnectors
-                    setUpdatedInterconnects((prevInterconnects) =>
-                      prevInterconnects.map((ic) => ({
-                        ...ic,
-                        Source: ic.Source === marker.Name ? newName : ic.Source,
-                        Target: ic.Target === marker.Name ? newName : ic.Target,
-                        Update: "1",
-                      }))
+                    // Create professional tooltip and details
+                    const newTooltip = createProfessionalTooltip(
+                      addressInfo,
+                      newName
+                    );
+                    const newDetails = createProfessionalDetails(
+                      addressInfo,
+                      newName
                     );
 
-                    // Update connected paths with new name
+                    console.log("Marker dragged:", marker.Name);
+                    console.log("New position:", { lat: newLat, lng: newLng });
+                    console.log("New name:", newName);
+                    console.log("Address info:", addressInfo);
+
+                    // Add to dragged markers set
+                    setDraggedMarkers(
+                      (prev) => new Set([...prev, marker.Name])
+                    );
+
+                    // Update the marker with new information
+                    setUpdatedMarkers((prevMarkers) =>
+                      prevMarkers.map((m) =>
+                        m.Name === marker.Name
+                          ? {
+                              ...m,
+                              Name: newName, // Update the name to reflect the new location
+                              LatLng: `${newLat}, ${newLng}`,
+                              Address: formattedAddress,
+                              tooltip: newTooltip,
+                              Details: newDetails,
+                              Update: "1",
+                            }
+                          : m
+                      )
+                    );
+
+                    // Update connected paths
                     await updateConnectedPaths(
                       marker.Name,
                       newName,
                       event.latLng
                     );
 
-                    // Remove the old marker from the map and from markersRef
-                    const oldMarker = markersRef.current.get(marker.Name);
-                    if (oldMarker) {
-                      oldMarker.map = null;
+                    // Update the marker title to reflect the new name
+                    mapMarker.title = newName;
+
+                    // Show success message
+                    const successContent = `
+                    <div style="font-family: Arial, sans-serif; padding: 12px; max-width: 300px;">
+                      <div style="font-weight: bold; font-size: 16px; margin-bottom: 10px; color: #333; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                        ${newName}
+                      </div>
+                      
+                      <div style="margin-bottom: 12px;">
+                        <div style="font-weight: 600; margin-bottom: 4px; color: #555;">Location updated:</div>
+                        <div style="color: #333; font-size: 14px;">${
+                          addressInfo.city ? addressInfo.city + ", " : ""
+                        }${addressInfo.country || "Unknown location"}</div>
+                      </div>
+                      
+                      ${
+                        addressInfo.street
+                          ? `
+                        <div style="margin-bottom: 12px;">
+                          <div style="font-weight: 600; margin-bottom: 4px; color: #555;">Address:</div>
+                          <div style="color: #333; font-size: 14px;">${addressInfo.street}</div>
+                        </div>
+                      `
+                          : ""
+                      }
+                      
+                      <div style="margin-bottom: 8px;">
+                        <div style="font-weight: 600; margin-bottom: 4px; color: #555;">Coordinates:</div>
+                        <div style="color: #333; font-size: 14px; font-family: monospace;">${newLat.toFixed(
+                          6
+                        )}, ${newLng.toFixed(6)}</div>
+                      </div>
+                      
+                      <div style="margin-top: 12px; padding-top: 8px; border-top: 1px solid #eee; color: #28a745; font-weight: 500;">
+                        Location data updated successfully
+                      </div>
+                    </div>
+                  `;
+                    infoWindowRef.current?.setContent(successContent);
+
+                    // Hide loading indicator
+                    setIsLoading(false);
+
+                    // Update the marker reference with the new name
+                    if (newName !== marker.Name) {
+                      markersRef.current.set(newName, mapMarker);
                       markersRef.current.delete(marker.Name);
                     }
+                  } catch (error) {
+                    console.error("Error updating marker after drag:", error);
 
-                    // Create the new marker (with newName and new position)
-                    const mapMarker =
-                      new google.maps.marker.AdvancedMarkerElement({
-                        position: { lat: newLat, lng: newLng },
-                        map,
-                        title: newName,
-                        gmpDraggable: editMode,
-                        gmpClickable: true,
-                        // ...other options as needed
-                      });
+                    // Show error message
+                    const errorContent = `
+                    <div style="font-family: Arial, sans-serif; padding: 12px; max-width: 300px;">
+                      <div style="font-weight: bold; font-size: 16px; margin-bottom: 10px; color: #333; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                        ${marker.Name}
+                      </div>
+                      
+                      <div style="margin-bottom: 12px;">
+                        <div style="font-weight: 600; margin-bottom: 4px; color: #555;">Position updated:</div>
+                        <div style="color: #333; font-size: 14px;">Coordinates: ${newLat.toFixed(
+                          6
+                        )}, ${newLng.toFixed(6)}</div>
+                      </div>
+                      
+                      <div style="margin-top: 12px; padding-top: 8px; border-top: 1px solid #eee; color: #dc3545; font-weight: 500;">
+                        Could not retrieve location details. Position was updated.
+                      </div>
+                    </div>
+                  `;
+                    infoWindowRef.current?.setContent(errorContent);
 
-                    // Add the new marker to markersRef
-                    markersRef.current.set(newName, mapMarker);
-                  } else {
-                    // If newName is not valid, just update the position and details, keep the old name
+                    // Hide loading indicator
+                    setIsLoading(false);
+
+                    // Still update the position even if geocoding fails
                     setUpdatedMarkers((prevMarkers) =>
                       prevMarkers.map((m) =>
                         m.Name === marker.Name
                           ? {
                               ...m,
                               LatLng: `${newLat}, ${newLng}`,
-                              Address: formattedAddress,
-                              tooltip: newTooltip,
-                              Details: newDetails,
                               Update: "1",
                             }
                           : m
@@ -582,102 +800,158 @@ export default function GoogleMap({
     });
     polylinesRef.current.clear();
 
-    updatedInterconnects.forEach((segment) => {
-      if (!segment.Source || !segment.Target) {
-        return;
-      }
+    // Make sure we're using the latest marker references
+    const processInterconnects = async () => {
+      const google = await loader.load();
 
-      // Use updatedMarkers for lookups
-      const sourceMarker = markersRef.current.get(segment.Source);
-      const targetMarker = markersRef.current.get(segment.Target);
-      if (!sourceMarker || !targetMarker) {
-        const google = window.google;
-        if (!sourceMarker && segment.WaypointLatLngArray) {
-          const [firstCoord, lastCoord] =
-            segment.WaypointLatLngArray.split(" → ");
-          if (firstCoord) {
-            const [lat, lng] = firstCoord.split(/[, ]+/).map(Number);
-            if (!isNaN(lat) && !isNaN(lng)) {
-              new google.maps.Marker({
-                position: { lat, lng },
-                map,
-                icon: {
-                  path: google.maps.SymbolPath.CIRCLE,
-                  scale: 6,
-                  fillColor: "#ff0000",
-                  fillOpacity: 1,
-                  strokeWeight: 2,
-                  strokeColor: "#fff",
-                },
-                title: "Missing endpoint for interconnector",
-              });
-            }
-          }
-          if (lastCoord) {
-            const [lat, lng] = lastCoord.split(/[, ]+/).map(Number);
-            if (!isNaN(lat) && !isNaN(lng)) {
-              new google.maps.Marker({
-                position: { lat, lng },
-                map,
-                icon: {
-                  path: google.maps.SymbolPath.CIRCLE,
-                  scale: 6,
-                  fillColor: "#ff0000",
-                  fillOpacity: 1,
-                  strokeWeight: 2,
-                  strokeColor: "#fff",
-                },
-                title: "Missing endpoint for interconnector",
-              });
-            }
-          }
+      // Process each interconnect
+      for (const segment of updatedInterconnects) {
+        if (!segment.Source || !segment.Target) {
+          console.log("Skipping interconnect with missing source or target");
+          continue;
         }
-        return;
-      }
 
-      // Optionally, parse waypoints if you want to support them
-      let path = [sourceMarker.position!];
-      const waypoints = segment.WaypointLatLngArray?.replace(/[\[\]]/g, "")
-        .split(",")
-        .map((coord) => {
-          const [lat, lng] = coord.trim().split(/\s+/).map(Number);
-          return { lat, lng };
-        })
-        .filter((coord) => !isNaN(coord.lat) && !isNaN(coord.lng));
-      if (waypoints && waypoints.length > 0) {
-        path = path.concat(waypoints);
-      }
-      path.push(targetMarker.position!);
+        // Get marker references
+        const sourceMarker = markersRef.current.get(segment.Source);
+        const targetMarker = markersRef.current.get(segment.Target);
 
-      const polyline = new google.maps.Polyline({
-        path,
-        geodesic: true,
-        strokeColor: segment.LineColor,
-        strokeOpacity: 1.0,
-        strokeWeight: parseInt(segment.LineWidthpx),
-        editable: editMode,
-        map,
-      });
-
-      // Event listeners for polyline
-      polyline.addListener("mouseover", () => {
-        if (segment.Desc) {
-          infoWindowRef.current?.setContent(
-            `${segment.Source} → ${segment.Target}: ${segment.Desc}`
+        // If either marker is missing, log and continue
+        if (!sourceMarker || !targetMarker) {
+          console.log(
+            `Missing marker for interconnect ${segment.Source} -> ${segment.Target}`
           );
-          infoWindowRef.current?.open(map);
-          infoWindowRef.current?.setPosition(path[Math.floor(path.length / 2)]);
+
+          // Optionally add visual indicators for missing endpoints
+          if (!sourceMarker && !targetMarker) {
+            console.log("Both source and target markers are missing");
+            continue;
+          }
+
+          // Handle case where one marker exists but the other doesn't
+          let existingMarkerPosition;
+          let missingMarkerName;
+
+          if (sourceMarker) {
+            existingMarkerPosition = sourceMarker.position;
+            missingMarkerName = segment.Target;
+          } else if (targetMarker) {
+            existingMarkerPosition = targetMarker.position;
+            missingMarkerName = segment.Source;
+          }
+
+          if (existingMarkerPosition) {
+            // Create a visual indicator for the missing endpoint
+            new google.maps.Marker({
+              position: existingMarkerPosition,
+              map,
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 6,
+                fillColor: "#ff0000",
+                fillOpacity: 1,
+                strokeWeight: 2,
+                strokeColor: "#fff",
+              },
+              title: `Missing ${missingMarkerName} endpoint for interconnect`,
+            });
+          }
+
+          continue;
         }
-      });
 
-      polyline.addListener("mouseout", () => {
-        infoWindowRef.current?.close();
-      });
+        // Get positions
+        const sourcePosition = sourceMarker.position;
+        const targetPosition = targetMarker.position;
 
-      polylinesRef.current.set(`${segment.Source}-${segment.Target}`, polyline);
-    });
+        if (!sourcePosition || !targetPosition) {
+          console.log("Invalid marker positions for interconnect");
+          continue;
+        }
 
-    // Do NOT call setUpdatedInterconnects here!
+        // Build path with waypoints if available
+        let path = [sourcePosition];
+
+        // Parse waypoints if available
+        if (segment.WaypointLatLngArray) {
+          try {
+            // Handle different waypoint formats
+            const waypointStr = segment.WaypointLatLngArray.replace(
+              /[[\]]/g,
+              ""
+            );
+
+            // Try comma-separated format first
+            let waypoints = waypointStr
+              .split(",")
+              .map((coord) => {
+                const [lat, lng] = coord.trim().split(/\s+/).map(Number);
+                return isNaN(lat) || isNaN(lng) ? null : { lat, lng };
+              })
+              .filter(Boolean);
+
+            // If no valid waypoints, try arrow-separated format
+            if (waypoints.length === 0) {
+              waypoints = waypointStr
+                .split("→")
+                .map((coord) => {
+                  const [lat, lng] = coord.trim().split(/\s+/).map(Number);
+                  return isNaN(lat) || isNaN(lng) ? null : { lat, lng };
+                })
+                .filter(Boolean);
+            }
+
+            // Add valid waypoints to path
+            if (waypoints.length > 0) {
+              path = path.concat(waypoints);
+            }
+          } catch (error) {
+            console.error("Error parsing waypoints:", error);
+          }
+        }
+
+        // Add target position as final point
+        path.push(targetPosition);
+
+        // Create polyline with appropriate style
+        const polyline = new google.maps.Polyline({
+          path,
+          geodesic: true,
+          strokeColor: segment.LineColor || "#FF0000", // Default to red if not specified
+          strokeOpacity: 1.0,
+          strokeWeight: Number.parseInt(segment.LineWidthpx) || 3, // Default to 3px if not specified
+          editable: editMode,
+          map,
+        });
+
+        // Add event listeners for polyline
+        polyline.addListener("mouseover", () => {
+          if (segment.Desc) {
+            infoWindowRef.current?.setContent(`
+              <div style="font-family: Arial, sans-serif; padding: 8px;">
+                <div style="font-weight: bold; margin-bottom: 5px;">${segment.Source} → ${segment.Target}</div>
+                <div>${segment.Desc}</div>
+              </div>
+            `);
+            infoWindowRef.current?.open(map);
+            infoWindowRef.current?.setPosition(
+              path[Math.floor(path.length / 2)]
+            );
+          }
+        });
+
+        polyline.addListener("mouseout", () => {
+          infoWindowRef.current?.close();
+        });
+
+        // Store reference to polyline
+        polylinesRef.current.set(
+          `${segment.Source}-${segment.Target}`,
+          polyline
+        );
+      }
+    };
+
+    processInterconnects();
   }, [map, updatedInterconnects, updatedMarkers, editMode]);
 
   // this is the function to save image
@@ -822,6 +1096,16 @@ export default function GoogleMap({
   const handleSave = async () => {
     if (fnSave) {
       try {
+        // Show loading indicator or message
+        const saveButton = document.querySelector(
+          "button.bg-green-500"
+        ) as HTMLButtonElement;
+        if (saveButton) {
+          const originalText = saveButton.textContent;
+          saveButton.textContent = "Saving...";
+          saveButton.disabled = true;
+        }
+
         const {
           markers: capturedMarkers,
           interconnects: capturedInterconnects,
@@ -830,25 +1114,57 @@ export default function GoogleMap({
         console.log("Captured Markers:", capturedMarkers);
         console.log("Captured Interconnects:", capturedInterconnects);
 
+        // Ensure all markers have the Update flag set
+        const markersToSave = capturedMarkers.map((marker) => ({
+          ...marker,
+          Update: "1",
+        }));
+
+        // Ensure all interconnects have the Update flag set
+        const interconnectsToSave = capturedInterconnects.map(
+          (interconnect) => ({
+            ...interconnect,
+            Update: "1",
+          })
+        );
+
         // Save all markers and interconnects
-        await fnSave(capturedMarkers, capturedInterconnects);
+        await fnSave(markersToSave, interconnectsToSave);
 
         // Clear the dragged markers set and previous states after saving
         setDraggedMarkers(new Set());
         setPreviousMarkerStates(new Map());
 
         // Update local state with captured data
-        setUpdatedMarkers(capturedMarkers);
-        setUpdatedInterconnects(capturedInterconnects);
+        setUpdatedMarkers(markersToSave);
+        setUpdatedInterconnects(interconnectsToSave);
 
         // Wait for state to update
         await new Promise((resolve) => setTimeout(resolve, 500));
 
         // Save map as image
         await saveMapAsImage();
+
+        // Reset button state
+        if (saveButton) {
+          saveButton.textContent = "SAVE";
+          saveButton.disabled = false;
+        }
+
+        // Show success message
+        alert("Map data saved successfully!");
       } catch (error) {
         console.error("Error in save process:", error);
         alert("Failed to save data. Please try again.");
+
+        // Reset button state on error
+        const saveButton = document.querySelector(
+          "button.bg-green-500"
+        ) as HTMLButtonElement;
+        if (saveButton) {
+          saveButton.textContent = "SAVE";
+          saveButton.disabled = false;
+        }
       }
     } else {
       console.error("Save function not provided");
@@ -946,41 +1262,78 @@ export default function GoogleMap({
           />
         </div>
       )}
-      <button
-        className="px-4 py-2 bg-blue-500 text-white rounded bt-center"
-        onClick={() => setEditMode(false)}
-      >
-        Normal Mode
-      </button>
-      <button
-        className="px-4 py-2 bg-red-500 text-white rounded bt-center"
-        onClick={() => setEditMode(true)}
-        style={{ margin: 4 }}
-      >
-        Edit Mode
-      </button>
 
-      {/* Preview Button and it will be appear in the edit mode only */}
-      {editMode && (
-        <button
-          className="px-4 py-2 bg-blue-500 text-white rounded"
-          onClick={handlePreview}
-        >
-          Preview
-        </button>
+      {/* Loading overlay */}
+      {isLoading && (
+        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+          <div className="bg-white p-4 rounded-lg shadow-lg flex items-center space-x-3">
+            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
+            <div>Updating location data...</div>
+          </div>
+        </div>
       )}
-      {editMode && (
+
+      <div className="flex space-x-2 mb-4">
         <button
-          className="px-4 py-2 bg-green-500 text-white rounded ml-2"
-          onClick={() => {
-            handleSave();
-            saveMapAsImage();
-          }}
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+          onClick={() => setEditMode(false)}
         >
-          SAVE
+          Normal Mode
         </button>
+        <button
+          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+          onClick={() => setEditMode(true)}
+        >
+          Edit Mode
+        </button>
+
+        {/* Preview Button and it will be appear in the edit mode only */}
+        {editMode && (
+          <button
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+            onClick={handlePreview}
+          >
+            Preview Changes
+          </button>
+        )}
+        {editMode && (
+          <button
+            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
+            onClick={() => {
+              handleSave();
+            }}
+          >
+            SAVE
+          </button>
+        )}
+      </div>
+
+      {editMode && (
+        <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-md text-sm text-yellow-800">
+          <p className="font-medium">Edit Mode Instructions:</p>
+          <ul className="list-disc pl-5 mt-1">
+            <li>Drag markers to new locations to update them</li>
+            <li>
+              Marker details will automatically update with new location
+              information
+            </li>
+            <li>
+              Click "Preview Changes" to review your changes before saving
+            </li>
+            <li>Click "SAVE" to permanently save your changes</li>
+          </ul>
+        </div>
       )}
-      <div ref={mapRef} style={{ width: "100%", height: "800px" }} />
+
+      <div
+        ref={mapRef}
+        style={{
+          width: "100%",
+          height: "800px",
+          borderRadius: "8px",
+          boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+        }}
+      />
     </div>
   );
 }

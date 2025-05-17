@@ -902,7 +902,14 @@ export default function GoogleMap({
 
             // Add valid waypoints to path
             if (waypoints.length > 0) {
-              path = path.concat(waypoints);
+              // Filter out null values from waypoints
+              const validWaypoints = waypoints.filter(
+                (coord) => coord !== null
+              ) as {
+                lat: number;
+                lng: number;
+              }[];
+              path = path.concat(validWaypoints);
             }
           } catch (error) {
             console.error("Error parsing waypoints:", error);
@@ -1320,9 +1327,10 @@ export default function GoogleMap({
               information
             </li>
             <li>
-              Click "Preview Changes" to review your changes before saving
+              Click &quot;Preview Changes&quot; to review your changes before
+              saving
             </li>
-            <li>Click "SAVE" to permanently save your changes</li>
+            <li>Click &quot;SAVE&quot; to permanently save your changes</li>{" "}
           </ul>
         </div>
       )}

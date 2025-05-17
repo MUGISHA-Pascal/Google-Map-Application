@@ -47,12 +47,12 @@
     "Name": "IOWA",
     "Selected": "0",
     "Update": "1",
-    "LatLng": "58.04889665164519, -108.91672199596711",
-    "Address": "{\"Address\":\"95CH23XM+H8\",\"City\":\"\",\"State\":\"\",\"ZIP\":\"\",\"Country\":\"\"}",
+    "LatLng": "60.02824991683173, -61.38426607479401",
+    "Address": "{\"Address\":\"97GW2JH8+77\",\"City\":\"\",\"State\":\"\",\"ZIP\":\"\",\"Country\":\"\"}",
     "iconSVGfile": "myicon.svg",
     "AlertStatus": "0",
-    "tooltip": "Location: IOWA\\nAddress: 95CH23XM+H8",
-    "Details": "IOWA Details\\nAddress: 95CH23XM+H8"
+    "tooltip": "Location: IOWA\\nAddress: 97GW2JH8+77",
+    "Details": "IOWA Details\\nAddress: 97GW2JH8+77"
   },
   {
     "Name": "Anchorage",
@@ -88,17 +88,6 @@
     "Details": "This is Ebury Mews E, London Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line7"
   },
   {
-    "Name": "Atomic-Brussels",
-    "Selected": "0",
-    "Update": "1",
-    "LatLng": "50.895692, 4.3376882",
-    "Address": "{\"Address\":\"{ \\\"Place de l'Atomium 1\\\"\",\"City\":\"\\\"Bruxelles\\\"\",\"State\":\"\\\"\\\"\",\"ZIP\":\"\\\"B-1020\\\"\",\"Country\":\"\\\"Belgium\\\"}\"}",
-    "iconSVGfile": "myicon.svg",
-    "AlertStatus": "0",
-    "tooltip": "This is Brussels tooltip line1\\nThis is Tooltip line4",
-    "Details": "This is Brussels Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line6"
-  },
-  {
     "Name": "Springfield, IL",
     "Selected": "0",
     "Update": "1",
@@ -132,17 +121,6 @@
     "Details": "Las Ánimas, Mexico Details\\nAddress: F3HP+X3 Las Ánimas\\nCity: Las Ánimas\\nState/Region: Coahuila de Zaragoza\\nPostal Code: 27543\\nCountry: Mexico"
   },
   {
-    "Name": "Yanama, Peru",
-    "Selected": "0",
-    "Update": "1",
-    "LatLng": "-13.337292658033638, -72.84176053182381",
-    "Address": "{\"Address\":\"M575+37 Yanama\",\"City\":\"Yanama\",\"State\":\"Cuzco\",\"ZIP\":\"08710\",\"Country\":\"Peru\"}",
-    "iconSVGfile": "myicon.svg",
-    "AlertStatus": "0",
-    "tooltip": "Location: Yanama, Peru\\nAddress: M575+37 Yanama\\nRegion: Cuzco\\nPostal Code: 08710",
-    "Details": "Yanama, Peru Details\\nAddress: M575+37 Yanama\\nCity: Yanama\\nState/Region: Cuzco\\nPostal Code: 08710\\nCountry: Peru"
-  },
-  {
     "Name": "Berdaale, Somalia",
     "Selected": "0",
     "Update": "1",
@@ -163,5 +141,27 @@
     "AlertStatus": "0",
     "tooltip": "Location: Chitti, Ethiopia\\nAddress: XF9H+FG Chitti\\nRegion: Southern Nations, Nationalities and Peoples",
     "Details": "Chitti, Ethiopia Details\\nAddress: XF9H+FG Chitti\\nCity: Chitti\\nState/Region: Southern Nations, Nationalities and Peoples\\nCountry: Ethiopia"
+  },
+  {
+    "Name": "Val en Vignes, France",
+    "Selected": "0",
+    "Update": "1",
+    "LatLng": "47.32732037430098, 15.636375658038313",
+    "Address": "{\"Address\":\"3M76+2W Val en Vignes\",\"City\":\"Val en Vignes\",\"State\":\"Nouvelle-Aquitaine\",\"ZIP\":\"\",\"Country\":\"France\"}",
+    "iconSVGfile": "myicon.svg",
+    "AlertStatus": "0",
+    "tooltip": "Location: Val en Vignes, France\\nAddress: 3M76+2W Val en Vignes\\nRegion: Nouvelle-Aquitaine",
+    "Details": "Val en Vignes, France Details\\nAddress: 3M76+2W Val en Vignes\\nCity: Val en Vignes\\nState/Region: Nouvelle-Aquitaine\\nCountry: France"
+  },
+  {
+    "Name": "Colonia Rossell y Rius, Uruguay",
+    "Selected": "0",
+    "Update": "1",
+    "LatLng": "-33.19897996608714, -55.69890441076058",
+    "Address": "{\"Address\":\"R822+CC Colonia Rossell y Rius\",\"City\":\"Colonia Rossell y Rius\",\"State\":\"Departamento de Durazno\",\"ZIP\":\"98000\",\"Country\":\"Uruguay\"}",
+    "iconSVGfile": "myicon.svg",
+    "AlertStatus": "0",
+    "tooltip": "Location: Colonia Rossell y Rius, Uruguay\\nAddress: R822+CC Colonia Rossell y Rius\\nRegion: Departamento de Durazno\\nPostal Code: 98000",
+    "Details": "Colonia Rossell y Rius, Uruguay Details\\nAddress: R822+CC Colonia Rossell y Rius\\nCity: Colonia Rossell y Rius\\nState/Region: Departamento de Durazno\\nPostal Code: 98000\\nCountry: Uruguay"
   }
 ]

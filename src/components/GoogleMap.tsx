@@ -1153,6 +1153,9 @@ export default function GoogleMap({
 
         // Show success message
         alert("Map data saved successfully!");
+
+        // Refresh the page
+        window.location.reload();
       } catch (error) {
         console.error("Error in save process:", error);
         alert("Failed to save data. Please try again.");
@@ -1171,7 +1174,6 @@ export default function GoogleMap({
       alert("Save function not provided");
     }
   };
-
   const handlePreview = async () => {
     // Directly capture the current map state
     const { markers: capturedMarkers, interconnects: capturedInterconnects } =

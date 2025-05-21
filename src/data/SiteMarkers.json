@@ -47,12 +47,12 @@
     "Name": "IOWA",
     "Selected": "0",
     "Update": "1",
-    "LatLng": "60.02824991683173, -61.38426607479401",
-    "Address": "{\"Address\":\"97GW2JH8+77\",\"City\":\"\",\"State\":\"\",\"ZIP\":\"\",\"Country\":\"\"}",
+    "LatLng": "74.27370531599603, -44.436234887736525",
+    "Address": "{\"Address\":\"C86Q7HF7+FG\",\"City\":\"\",\"State\":\"\",\"ZIP\":\"\",\"Country\":\"\"}",
     "iconSVGfile": "myicon.svg",
     "AlertStatus": "0",
-    "tooltip": "Location: IOWA\\nAddress: 97GW2JH8+77",
-    "Details": "IOWA Details\\nAddress: 97GW2JH8+77"
+    "tooltip": "Location: IOWA\\nAddress: C86Q7HF7+FG",
+    "Details": "IOWA Details\\nAddress: C86Q7HF7+FG"
   },
   {
     "Name": "Anchorage",
@@ -110,17 +110,6 @@
     "Details": "Blanford, London Details\\nAddress: 9MFJ6R2F+PH"
   },
   {
-    "Name": "Las Ánimas, Mexico",
-    "Selected": "0",
-    "Update": "1",
-    "LatLng": "27.479925121521035, -102.91479706839596",
-    "Address": "{\"Address\":\"F3HP+X3 Las Ánimas\",\"City\":\"Las Ánimas\",\"State\":\"Coahuila de Zaragoza\",\"ZIP\":\"27543\",\"Country\":\"Mexico\"}",
-    "iconSVGfile": "myicon.svg",
-    "AlertStatus": "0",
-    "tooltip": "Location: Las Ánimas, Mexico\\nAddress: F3HP+X3 Las Ánimas\\nRegion: Coahuila de Zaragoza\\nPostal Code: 27543",
-    "Details": "Las Ánimas, Mexico Details\\nAddress: F3HP+X3 Las Ánimas\\nCity: Las Ánimas\\nState/Region: Coahuila de Zaragoza\\nPostal Code: 27543\\nCountry: Mexico"
-  },
-  {
     "Name": "Berdaale, Somalia",
     "Selected": "0",
     "Update": "1",
@@ -163,5 +152,16 @@
     "AlertStatus": "0",
     "tooltip": "Location: Colonia Rossell y Rius, Uruguay\\nAddress: R822+CC Colonia Rossell y Rius\\nRegion: Departamento de Durazno\\nPostal Code: 98000",
     "Details": "Colonia Rossell y Rius, Uruguay Details\\nAddress: R822+CC Colonia Rossell y Rius\\nCity: Colonia Rossell y Rius\\nState/Region: Departamento de Durazno\\nPostal Code: 98000\\nCountry: Uruguay"
+  },
+  {
+    "Name": "Tangiwai, New Zealand",
+    "Selected": "0",
+    "Update": "1",
+    "LatLng": "-39.40586958156154, 175.55741071625675",
+    "Address": "{\"Address\":\"HHV4+MX Tangiwai\",\"City\":\"Tangiwai\",\"State\":\"Manawatū-Whanganui Region\",\"ZIP\":\"\",\"Country\":\"New Zealand\"}",
+    "iconSVGfile": "myicon.svg",
+    "AlertStatus": "0",
+    "tooltip": "Location: Tangiwai, New Zealand\\nAddress: HHV4+MX Tangiwai\\nRegion: Manawatū-Whanganui Region",
+    "Details": "Tangiwai, New Zealand Details\\nAddress: HHV4+MX Tangiwai\\nCity: Tangiwai\\nState/Region: Manawatū-Whanganui Region\\nCountry: New Zealand"
   }
 ]

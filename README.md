@@ -2,7 +2,7 @@
 
 A professional Google Maps integration built with Next.js, designed for visualizing and managing site markers and their interconnections.
 
-## 🚀 Features
+## Features
 
 - **Interactive Map Visualization**: Renders site markers and interconnect segments (polylines) using the Google Maps JavaScript API.
 - **Advanced Edit Mode**:
@@ -16,7 +16,7 @@ A professional Google Maps integration built with Next.js, designed for visualiz
 - **Export Capabilities**: Capture the current map view and markers as a PNG image.
 - **Professional UI**: Built with Tailwind CSS for a clean, responsive experience.
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
@@ -26,7 +26,7 @@ A professional Google Maps integration built with Next.js, designed for visualiz
   - `@googlemaps/js-api-loader` for optimized API loading.
   - `html2canvas` for map image export.
 
-## 🏁 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -62,7 +62,7 @@ A professional Google Maps integration built with Next.js, designed for visualiz
 5. **Access the app**:
    Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## 📖 How to Use
+## How to Use
 
 ### Normal Mode
 - **View**: Explore markers and segments.
@@ -76,7 +76,7 @@ A professional Google Maps integration built with Next.js, designed for visualiz
 4. **Preview**: Click **"Preview Changes"** to see the modified JSON data.
 5. **Save**: Click **"SAVE"** to persist the changes to the server.
 
-## 📁 Project Structure
+## Project Structure
 
 - `src/app/`: Next.js pages and API routes.
 - `src/components/`: Reusable UI components (e.g., `GoogleMap`, `DataPreview`).
@@ -84,5 +84,5 @@ A professional Google Maps integration built with Next.js, designed for visualiz
 - `src/app/utils/`: Helper functions for map loading and geocoding.
 - `src/types/`: TypeScript definitions for markers and segments.
 
-## 📄 License
+## License
 This project is licensed under the MIT License - see the LICENSE file for details.

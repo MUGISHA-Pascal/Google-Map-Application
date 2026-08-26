@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import {
   loader,
   getLatLngFromAddress,
@@ -63,6 +63,13 @@ export default function GoogleMap({
     Map<string, SiteMarker>
   >(new Map());
   const [isLoading, setIsLoading] = useState(false);
+  const [activeMarker, setActiveMarker] = useState<string | null>(null);
+
+  // Store real-time marker data for tooltips
+  const markerDataRef = useRef<Map<string, any>>(new Map());
+
+  // Track markers currently being updated
+  const updatingMarkersRef = useRef<Set<string>>(new Set());
 
   // Refs to store map objects
   const markersRef = useRef<
@@ -70,6 +77,7 @@ export default function GoogleMap({
   >(new Map());
   const polylinesRef = useRef<Map<string, google.maps.Polyline>>(new Map());
   const infoWindowRef = useRef<google.maps.InfoWindow | null>(null);
+  const tooltipWindowRef = useRef<google.maps.InfoWindow | null>(null);
 
   // Keep track of processed markers for state updates
   const processedMarkersRef = useRef<SiteMarker[]>([]);
@@ -123,6 +131,12 @@ export default function GoogleMap({
         disableAutoPan: false,
       });
 
+      // Create a separate info window for tooltips to avoid conflicts
+      tooltipWindowRef.current = new google.maps.InfoWindow({
+        maxWidth: 280,
+        disableAutoPan: true,
+      });
+
       // Set initial bounds based on markers
       if (markers.length > 0) {
         const bounds = new google.maps.LatLngBounds();
@@ -167,9 +181,12 @@ export default function GoogleMap({
       });
       polylinesRef.current.clear();
 
-      // Clear info window
+      // Clear info windows
       if (infoWindowRef.current) {
         infoWindowRef.current.close();
+      }
+      if (tooltipWindowRef.current) {
+        tooltipWindowRef.current.close();
       }
     };
   }, []); // Empty dependency array since we only want this to run once on mount
@@ -327,6 +344,363 @@ export default function GoogleMap({
     return detailLines.join("\\n");
   };
 
+  // Function to generate tooltip HTML content
+  const generateTooltipContent = useCallback(
+    async (marker: any, position: google.maps.LatLng) => {
+      const lat =
+        typeof position.lat === "function" ? position.lat() : position.lat;
+      const lng =
+        typeof position.lng === "function" ? position.lng() : position.lng;
+      const markerName = marker.title || "Marker";
+
+      // Check if we have cached location data for this marker
+      const cachedData = markerDataRef.current.get(markerName);
+
+      // Check if this marker is currently being updated
+      const isUpdating = updatingMarkersRef.current.has(markerName);
+
+      if (isUpdating) {
+        // Show loading indicator for markers being updated
+        return `
+        <div style="font-family: Arial, sans-serif; padding: 8px; text-align: center;">
+          <div style="font-weight: bold; font-size: 14px; margin-bottom: 8px; color: #333;">${markerName}</div>
+          <div style="margin-bottom: 8px; font-size: 13px;">Updating location data...</div>
+          <div style="display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(0,0,0,0.1); border-radius: 50%; border-top-color: #3498db; animation: spin 1s linear infinite;"></div>
+          <style>
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+          </style>
+        </div>
+      `;
+      } else if (cachedData) {
+        // Use cached data for immediate display
+        return `
+        <div style="font-family: Arial, sans-serif; padding: 8px;">
+          <div style="font-weight: bold; font-size: 16px; margin-bottom: 8px; color: #333;">${markerName}</div>
+          <div style="font-size: 14px; color: #555;">
+            ${
+              cachedData.city && cachedData.country
+                ? `Location: ${cachedData.city}, ${cachedData.country}<br>`
+                : ""
+            }
+            ${cachedData.street ? `Address: ${cachedData.street}<br>` : ""}
+            ${cachedData.state ? `Region: ${cachedData.state}<br>` : ""}
+            ${
+              cachedData.postalCode
+                ? `Postal Code: ${cachedData.postalCode}<br>`
+                : ""
+            }
+            <span style="color: #666; font-size: 12px; font-family: monospace;">Coordinates: ${lat.toFixed(
+              6
+            )}, ${lng.toFixed(6)}</span>
+          </div>
+        </div>
+      `;
+      }
+
+      // If no cached data, use a simple tooltip while we fetch data
+      return `
+      <div style="font-family: Arial, sans-serif; padding: 8px;">
+        <div style="font-weight: bold; font-size: 16px; margin-bottom: 8px; color: #333;">${markerName}</div>
+        <div style="font-size: 14px; color: #555;">
+          <span style="color: #666; font-size: 12px; font-family: monospace;">Coordinates: ${lat.toFixed(
+            6
+          )}, ${lng.toFixed(6)}</span>
+        </div>
+      </div>
+    `;
+    },
+    []
+  );
+
+  // Function to update marker tooltip and listeners
+  const updateMarkerTooltip = useCallback(
+    async (
+      mapMarker: google.maps.marker.AdvancedMarkerElement,
+      markerData: SiteMarker
+    ) => {
+      const google = await loader.load();
+
+      // Remove existing listeners
+      google.maps.event.clearListeners(mapMarker, "mouseover");
+      google.maps.event.clearListeners(mapMarker, "mouseout");
+
+      // Add updated listeners
+      mapMarker.addListener("mouseout", () => {
+        tooltipWindowRef.current?.close();
+      });
+
+      mapMarker.addListener("mouseover", async () => {
+        const position = mapMarker.position;
+        if (!position) return;
+
+        const lat =
+          typeof position.lat === "function" ? position.lat() : position.lat;
+        const lng =
+          typeof position.lng === "function" ? position.lng() : position.lng;
+
+        // Get the initial tooltip content
+        const tooltipContent = await generateTooltipContent(
+          mapMarker,
+          position
+        );
+        tooltipWindowRef.current?.setContent(tooltipContent);
+        tooltipWindowRef.current?.open(map, mapMarker);
+
+        // If this marker isn't already being updated, fetch fresh location data
+        if (!updatingMarkersRef.current.has(mapMarker.title || "")) {
+          try {
+            const addressInfo = await reverseGeocode({ lat, lng });
+
+            // Cache the location data for future use
+            markerDataRef.current.set(mapMarker.title || "", addressInfo);
+
+            // Update the tooltip with the fresh data
+            const updatedTooltipContent = await generateTooltipContent(
+              mapMarker,
+              position
+            );
+            if (tooltipWindowRef.current?.getMap()) {
+              // Only update if still open
+              tooltipWindowRef.current.setContent(updatedTooltipContent);
+            }
+          } catch (error) {
+            console.error("Error fetching location data for tooltip:", error);
+          }
+        }
+      });
+    },
+    [generateTooltipContent, map]
+  );
+
+  // Real-time geocoding function
+  const performRealTimeGeocoding = useCallback(
+    async (
+      mapMarker: google.maps.marker.AdvancedMarkerElement,
+      marker: SiteMarker,
+      newLat: number,
+      newLng: number
+    ) => {
+      try {
+        // Mark this marker as being updated
+        updatingMarkersRef.current.add(marker.Name);
+
+        // Show loading indicator
+        const loadingContent = `
+        <div style="font-family: Arial, sans-serif; padding: 12px; text-align: center;">
+          <div style="margin-bottom: 8px; font-weight: bold;">Updating location data...</div>
+          <div style="display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(0,0,0,0.1); border-radius: 50%; border-top-color: #3498db; animation: spin 1s linear infinite;"></div>
+          <style>
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+          </style>
+        </div>
+      `;
+        infoWindowRef.current?.setContent(loadingContent);
+        infoWindowRef.current?.open(map, mapMarker);
+
+        // Get detailed address information for the new location
+        const addressInfo = await reverseGeocode({
+          lat: newLat,
+          lng: newLng,
+        });
+
+        // Cache the new location data immediately
+        markerDataRef.current.set(marker.Name, addressInfo);
+
+        // Create a professional name for the marker based on location
+        let newName = marker.Name;
+
+        // Only update the name if we have good location data and it's significantly different
+        if (addressInfo.city && addressInfo.country) {
+          // Check if the location has changed significantly
+          const oldNameParts = marker.Name.split(",").map((part) =>
+            part.trim().toLowerCase()
+          );
+          const newCityCountry = `${addressInfo.city}, ${addressInfo.country}`;
+
+          // If the current name doesn't contain the new city and country, update it
+          if (
+            !oldNameParts.includes(addressInfo.city.toLowerCase()) &&
+            !oldNameParts.includes(addressInfo.country.toLowerCase())
+          ) {
+            newName = newCityCountry;
+          }
+        }
+
+        // Create properly formatted address string
+        const formattedAddress = JSON.stringify({
+          Address: addressInfo.street || "",
+          City: addressInfo.city || "",
+          State: addressInfo.state || "",
+          ZIP: addressInfo.postalCode || "",
+          Country: addressInfo.country || "",
+        });
+
+        // Create professional tooltip and details
+        const newTooltip = createProfessionalTooltip(addressInfo, newName);
+        const newDetails = createProfessionalDetails(addressInfo, newName);
+
+        console.log("Marker dragged:", marker.Name);
+        console.log("New position:", { lat: newLat, lng: newLng });
+        console.log("New name:", newName);
+        console.log("Address info:", addressInfo);
+
+        // Add to dragged markers set
+        setDraggedMarkers((prev) => new Set([...prev, marker.Name]));
+
+        // Update the marker with new information
+        setUpdatedMarkers((prevMarkers) =>
+          prevMarkers.map((m) =>
+            m.Name === marker.Name
+              ? {
+                  ...m,
+                  Name: newName, // Update the name to reflect the new location
+                  LatLng: `${newLat}, ${newLng}`,
+                  Address: formattedAddress,
+                  tooltip: newTooltip,
+                  Details: newDetails,
+                  Update: "1",
+                }
+              : m
+          )
+        );
+
+        // Update connected paths
+        await updateConnectedPaths(marker.Name, newName, mapMarker.position!);
+
+        // Update the marker title to reflect the new name
+        mapMarker.title = newName;
+
+        // Update the marker data cache with the new name
+        if (newName !== marker.Name) {
+          const currentData = markerDataRef.current.get(marker.Name);
+          if (currentData) {
+            markerDataRef.current.set(newName, currentData);
+            markerDataRef.current.delete(marker.Name);
+          }
+        }
+
+        // Update the tooltip and listeners with new data
+        await updateMarkerTooltip(mapMarker, {
+          ...marker,
+          Name: newName,
+          LatLng: `${newLat}, ${newLng}`,
+          tooltip: newTooltip,
+        });
+
+        // Show success message
+        const successContent = `
+        <div style="font-family: Arial, sans-serif; padding: 12px; max-width: 300px;">
+          <div style="font-weight: bold; font-size: 16px; margin-bottom: 10px; color: #333; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+            ${newName}
+          </div>
+          
+          <div style="margin-bottom: 12px;">
+            <div style="font-weight: 600; margin-bottom: 4px; color: #555;">Location updated:</div>
+            <div style="color: #333; font-size: 14px;">${
+              addressInfo.city ? addressInfo.city + ", " : ""
+            }${addressInfo.country || "Unknown location"}</div>
+          </div>
+          
+          ${
+            addressInfo.street
+              ? `
+            <div style="margin-bottom: 12px;">
+              <div style="font-weight: 600; margin-bottom: 4px; color: #555;">Address:</div>
+              <div style="color: #333; font-size: 14px;">${addressInfo.street}</div>
+            </div>
+          `
+              : ""
+          }
+          
+          <div style="margin-bottom: 8px;">
+            <div style="font-weight: 600; margin-bottom: 4px; color: #555;">Coordinates:</div>
+            <div style="color: #333; font-size: 14px; font-family: monospace;">${newLat.toFixed(
+              6
+            )}, ${newLng.toFixed(6)}</div>
+          </div>
+          
+          <div style="margin-top: 12px; padding-top: 8px; border-top: 1px solid #eee; color: #28a745; font-weight: 500;">
+            Location data updated successfully
+          </div>
+        </div>
+      `;
+        infoWindowRef.current?.setContent(successContent);
+
+        // Update the marker reference with the new name
+        if (newName !== marker.Name) {
+          markersRef.current.set(newName, mapMarker);
+          markersRef.current.delete(marker.Name);
+        }
+
+        // Remove from updating markers
+        updatingMarkersRef.current.delete(marker.Name);
+
+        return {
+          success: true,
+          newName,
+          addressInfo,
+        };
+      } catch (error) {
+        console.error("Error updating marker after drag:", error);
+
+        // Show error message
+        const errorContent = `
+        <div style="font-family: Arial, sans-serif; padding: 12px; max-width: 300px;">
+          <div style="font-weight: bold; font-size: 16px; margin-bottom: 10px; color: #333; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+            ${marker.Name}
+          </div>
+          
+          <div style="margin-bottom: 12px;">
+            <div style="font-weight: 600; margin-bottom: 4px; color: #555;">Position updated:</div>
+            <div style="color: #333; font-size: 14px;">Coordinates: ${newLat.toFixed(
+              6
+            )}, ${newLng.toFixed(6)}</div>
+          </div>
+          
+          <div style="margin-top: 12px; padding-top: 8px; border-top: 1px solid #eee; color: #dc3545; font-weight: 500;">
+            Could not retrieve location details. Position was updated.
+          </div>
+        </div>
+      `;
+        infoWindowRef.current?.setContent(errorContent);
+
+        // Still update the position even if geocoding fails
+        setUpdatedMarkers((prevMarkers) =>
+          prevMarkers.map((m) =>
+            m.Name === marker.Name
+              ? {
+                  ...m,
+                  LatLng: `${newLat}, ${newLng}`,
+                  Update: "1",
+                }
+              : m
+          )
+        );
+
+        // Update the tooltip with at least the new coordinates
+        await updateMarkerTooltip(mapMarker, {
+          ...marker,
+          LatLng: `${newLat}, ${newLng}`,
+        });
+
+        // Remove from updating markers
+        updatingMarkersRef.current.delete(marker.Name);
+
+        return {
+          success: false,
+          newName: marker.Name,
+        };
+      }
+    },
+    [map, updateMarkerTooltip]
+  );
+
   // Process and update markers
   useEffect(() => {
     if (!map) return;
@@ -391,33 +765,9 @@ export default function GoogleMap({
             gmpClickable: true,
           });
 
-          // Store click listener reference so we can remove it later
-          let clickListener: google.maps.MapsEventListener | null = null;
-          let mouseoutListener: google.maps.MapsEventListener | null = null;
-          let mouseoverListener: google.maps.MapsEventListener | null = null;
-
-          // Remove existing listeners if they exist
-          const removeExistingListeners = () => {
-            if (clickListener) google.maps.event.removeListener(clickListener);
-            if (mouseoutListener)
-              google.maps.event.removeListener(mouseoutListener);
-            if (mouseoverListener)
-              google.maps.event.removeListener(mouseoverListener);
-          };
-
-          // Add new listeners
-          const addMarkerListeners = () => {
-            removeExistingListeners();
-
-            mouseoutListener = mapMarker.addListener("mouseout", () => {
-              infoWindowRef.current?.close();
-            });
-
-            mouseoverListener = mapMarker.addListener("mouseover", async () => {
-              // Get current position for fresh data
-              const position = mapMarker.position;
-              if (!position) return;
-
+          // Initialize location data for this marker
+          if (position) {
+            try {
               const lat =
                 typeof position.lat === "function"
                   ? position.lat()
@@ -427,111 +777,89 @@ export default function GoogleMap({
                   ? position.lng()
                   : position.lng;
 
-              // Create a professional tooltip with current location data
-              let tooltipContent = "";
-
-              if (marker.tooltip) {
-                // Use existing tooltip
-                tooltipContent = `
-                  <div style="font-family: Arial, sans-serif; padding: 8px;">
-                    <div style="font-weight: bold; font-size: 16px; margin-bottom: 8px; color: #333;">${
-                      marker.Name
-                    }</div>
-                    <div style="font-size: 14px; color: #555;">
-                      ${marker.tooltip.replace(/\\n/g, "<br>")}
-                    </div>
-                  </div>
-                `;
-              } else {
-                // Create a basic tooltip
-                tooltipContent = `
-                  <div style="font-family: Arial, sans-serif; padding: 8px;">
-                    <div style="font-weight: bold; font-size: 16px; margin-bottom: 8px; color: #333;">${
-                      marker.Name
-                    }</div>
-                    <div style="font-size: 14px; color: #555;">
-                      Coordinates: ${lat.toFixed(6)}, ${lng.toFixed(6)}
-                    </div>
-                  </div>
-                `;
-              }
-
-              infoWindowRef.current?.setContent(tooltipContent);
-              infoWindowRef.current?.open(map, mapMarker);
-            });
-
-            clickListener = mapMarker.addListener("click", async () => {
-              const position = mapMarker.position;
-              if (!position) return;
-
-              const lat =
-                typeof position.lat === "function"
-                  ? position.lat()
-                  : position.lat;
-              const lng =
-                typeof position.lng === "function"
-                  ? position.lng()
-                  : position.lng;
-
-              // Get fresh address information for current position
+              // Fetch and cache location data for this marker
               const addressInfo = await reverseGeocode({ lat, lng });
+              markerDataRef.current.set(marker.Name, addressInfo);
+            } catch (error) {
+              console.error("Error initializing marker data:", error);
+            }
+          }
 
-              // Create location string with only available components
-              const locationParts = [];
-              if (addressInfo.city) locationParts.push(addressInfo.city);
-              if (addressInfo.state) locationParts.push(addressInfo.state);
-              if (addressInfo.country) locationParts.push(addressInfo.country);
+          // Add updated tooltip and listeners
+          await updateMarkerTooltip(mapMarker, marker);
 
-              const locationString = locationParts.join(", ");
+          // Add click listener
+          mapMarker.addListener("click", async () => {
+            const position = mapMarker.position;
+            if (!position) return;
 
-              // Format the content with a more professional look
-              const content = `
-                <div style="font-family: Arial, sans-serif; padding: 12px; max-width: 300px;">
-                  <div style="font-weight: bold; font-size: 16px; margin-bottom: 10px; color: #333; border-bottom: 1px solid #eee; padding-bottom: 8px;">
-                    ${marker.Name}
-                  </div>
-                  
-                  <div style="margin-bottom: 12px;">
-                    <div style="font-weight: 600; margin-bottom: 4px; color: #555;">Location:</div>
-                    <div style="color: #333; font-size: 14px;">${
-                      locationString || "Unknown location"
-                    }</div>
-                  </div>
-                  
-                  ${
-                    addressInfo.street
-                      ? `
-                    <div style="margin-bottom: 12px;">
-                      <div style="font-weight: 600; margin-bottom: 4px; color: #555;">Address:</div>
-                      <div style="color: #333; font-size: 14px;">${addressInfo.street}</div>
-                    </div>
-                  `
-                      : ""
-                  }
-                  
-                  <div style="margin-bottom: 8px;">
-                    <div style="font-weight: 600; margin-bottom: 4px; color: #555;">Coordinates:</div>
-                    <div style="color: #333; font-size: 14px; font-family: monospace;">${lat.toFixed(
-                      6
-                    )}, ${lng.toFixed(6)}</div>
-                  </div>
+            const lat =
+              typeof position.lat === "function"
+                ? position.lat()
+                : position.lat;
+            const lng =
+              typeof position.lng === "function"
+                ? position.lng()
+                : position.lng;
+
+            // Get fresh address information for current position
+            const addressInfo = await reverseGeocode({ lat, lng });
+
+            // Create location string with only available components
+            const locationParts = [];
+            if (addressInfo.city) locationParts.push(addressInfo.city);
+            if (addressInfo.state) locationParts.push(addressInfo.state);
+            if (addressInfo.country) locationParts.push(addressInfo.country);
+
+            const locationString = locationParts.join(", ");
+
+            // Format the content with a more professional look
+            const content = `
+              <div style="font-family: Arial, sans-serif; padding: 12px; max-width: 300px;">
+                <div style="font-weight: bold; font-size: 16px; margin-bottom: 10px; color: #333; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                  ${mapMarker.title}
                 </div>
-              `;
+                
+                <div style="margin-bottom: 12px;">
+                  <div style="font-weight: 600; margin-bottom: 4px; color: #555;">Location:</div>
+                  <div style="color: #333; font-size: 14px;">${
+                    locationString || "Unknown location"
+                  }</div>
+                </div>
+                
+                ${
+                  addressInfo.street
+                    ? `
+                  <div style="margin-bottom: 12px;">
+                    <div style="font-weight: 600; margin-bottom: 4px; color: #555;">Address:</div>
+                    <div style="color: #333; font-size: 14px;">${addressInfo.street}</div>
+                  </div>
+                `
+                    : ""
+                }
+                
+                <div style="margin-bottom: 8px;">
+                  <div style="font-weight: 600; margin-bottom: 4px; color: #555;">Coordinates:</div>
+                  <div style="color: #333; font-size: 14px; font-family: monospace;">${lat.toFixed(
+                    6
+                  )}, ${lng.toFixed(6)}</div>
+                </div>
+              </div>
+            `;
 
-              // Set the content
-              infoWindowRef.current?.setContent(content);
-              infoWindowRef.current?.open(map, mapMarker);
-            });
-          };
-
-          // Initial addition of listeners
-          addMarkerListeners();
+            // Set the content
+            infoWindowRef.current?.setContent(content);
+            infoWindowRef.current?.open(map, mapMarker);
+          });
 
           if (editMode) {
-            // Enhanced drag event handler with loading indicator and professional formatting
+            // Enhanced drag event handler with real-time updates
             mapMarker.addListener("dragstart", () => {
-              // Show loading indicator on the marker or nearby
-              setIsLoading(true);
+              // Close any open tooltips
+              tooltipWindowRef.current?.close();
+
+              // Set this as the active marker
+              setActiveMarker(marker.Name);
 
               // Store the previous state if not already stored
               if (!previousMarkerStates.has(marker.Name)) {
@@ -544,6 +872,32 @@ export default function GoogleMap({
               }
             });
 
+            // Real-time updates during drag
+            mapMarker.addListener(
+              "drag",
+              (event: google.maps.MapMouseEvent) => {
+                if (event.latLng) {
+                  // Update the marker's position in real-time
+                  const newLat = event.latLng.lat();
+                  const newLng = event.latLng.lng();
+
+                  // Show real-time coordinates
+                  const dragContent = `
+                  <div style="font-family: Arial, sans-serif; padding: 8px; text-align: center; background-color: rgba(255,255,255,0.9); border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">
+                    <div style="font-weight: bold; margin-bottom: 4px;">${
+                      marker.Name
+                    }</div>
+                    <div style="font-family: monospace; font-size: 12px;">${newLat.toFixed(
+                      6
+                    )}, ${newLng.toFixed(6)}</div>
+                  </div>
+                `;
+                  infoWindowRef.current?.setContent(dragContent);
+                  infoWindowRef.current?.open(map, mapMarker);
+                }
+              }
+            );
+
             mapMarker.addListener(
               "dragend",
               async (event: google.maps.MapMouseEvent) => {
@@ -551,197 +905,20 @@ export default function GoogleMap({
                   const newLat = event.latLng.lat();
                   const newLng = event.latLng.lng();
 
-                  try {
-                    // Show loading indicator
-                    const loadingContent = `
-                    <div style="font-family: Arial, sans-serif; padding: 12px; text-align: center;">
-                      <div style="margin-bottom: 8px; font-weight: bold;">Updating location data...</div>
-                      <div style="display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(0,0,0,0.1); border-radius: 50%; border-top-color: #3498db; animation: spin 1s linear infinite;"></div>
-                      <style>
-                        @keyframes spin {
-                          0% { transform: rotate(0deg); }
-                          100% { transform: rotate(360deg); }
-                        }
-                      </style>
-                    </div>
-                  `;
-                    infoWindowRef.current?.setContent(loadingContent);
-                    infoWindowRef.current?.open(map, mapMarker);
+                  // Set loading state
+                  setIsLoading(true);
 
-                    // Get detailed address information for the new location
-                    const addressInfo = await reverseGeocode({
-                      lat: newLat,
-                      lng: newLng,
-                    });
+                  // Perform real-time geocoding and update
+                  const result = await performRealTimeGeocoding(
+                    mapMarker,
+                    marker,
+                    newLat,
+                    newLng
+                  );
 
-                    // Create a professional name for the marker based on location
-                    let newName = marker.Name;
-
-                    // Only update the name if we have good location data and it's significantly different
-                    // This prevents unnecessary name changes for small movements
-                    if (addressInfo.city && addressInfo.country) {
-                      // Check if the location has changed significantly
-                      const oldNameParts = marker.Name.split(",").map((part) =>
-                        part.trim().toLowerCase()
-                      );
-                      const newCityCountry = `${addressInfo.city}, ${addressInfo.country}`;
-
-                      // If the current name doesn't contain the new city and country, update it
-                      if (
-                        !oldNameParts.includes(
-                          addressInfo.city.toLowerCase()
-                        ) &&
-                        !oldNameParts.includes(
-                          addressInfo.country.toLowerCase()
-                        )
-                      ) {
-                        newName = newCityCountry;
-                      }
-                    }
-
-                    // Create properly formatted address string
-                    const formattedAddress = JSON.stringify({
-                      Address: addressInfo.street || "",
-                      City: addressInfo.city || "",
-                      State: addressInfo.state || "",
-                      ZIP: addressInfo.postalCode || "",
-                      Country: addressInfo.country || "",
-                    });
-
-                    // Create professional tooltip and details
-                    const newTooltip = createProfessionalTooltip(
-                      addressInfo,
-                      newName
-                    );
-                    const newDetails = createProfessionalDetails(
-                      addressInfo,
-                      newName
-                    );
-
-                    console.log("Marker dragged:", marker.Name);
-                    console.log("New position:", { lat: newLat, lng: newLng });
-                    console.log("New name:", newName);
-                    console.log("Address info:", addressInfo);
-
-                    // Add to dragged markers set
-                    setDraggedMarkers(
-                      (prev) => new Set([...prev, marker.Name])
-                    );
-
-                    // Update the marker with new information
-                    setUpdatedMarkers((prevMarkers) =>
-                      prevMarkers.map((m) =>
-                        m.Name === marker.Name
-                          ? {
-                              ...m,
-                              Name: newName, // Update the name to reflect the new location
-                              LatLng: `${newLat}, ${newLng}`,
-                              Address: formattedAddress,
-                              tooltip: newTooltip,
-                              Details: newDetails,
-                              Update: "1",
-                            }
-                          : m
-                      )
-                    );
-
-                    // Update connected paths
-                    await updateConnectedPaths(
-                      marker.Name,
-                      newName,
-                      event.latLng
-                    );
-
-                    // Update the marker title to reflect the new name
-                    mapMarker.title = newName;
-
-                    // Show success message
-                    const successContent = `
-                    <div style="font-family: Arial, sans-serif; padding: 12px; max-width: 300px;">
-                      <div style="font-weight: bold; font-size: 16px; margin-bottom: 10px; color: #333; border-bottom: 1px solid #eee; padding-bottom: 8px;">
-                        ${newName}
-                      </div>
-                      
-                      <div style="margin-bottom: 12px;">
-                        <div style="font-weight: 600; margin-bottom: 4px; color: #555;">Location updated:</div>
-                        <div style="color: #333; font-size: 14px;">${
-                          addressInfo.city ? addressInfo.city + ", " : ""
-                        }${addressInfo.country || "Unknown location"}</div>
-                      </div>
-                      
-                      ${
-                        addressInfo.street
-                          ? `
-                        <div style="margin-bottom: 12px;">
-                          <div style="font-weight: 600; margin-bottom: 4px; color: #555;">Address:</div>
-                          <div style="color: #333; font-size: 14px;">${addressInfo.street}</div>
-                        </div>
-                      `
-                          : ""
-                      }
-                      
-                      <div style="margin-bottom: 8px;">
-                        <div style="font-weight: 600; margin-bottom: 4px; color: #555;">Coordinates:</div>
-                        <div style="color: #333; font-size: 14px; font-family: monospace;">${newLat.toFixed(
-                          6
-                        )}, ${newLng.toFixed(6)}</div>
-                      </div>
-                      
-                      <div style="margin-top: 12px; padding-top: 8px; border-top: 1px solid #eee; color: #28a745; font-weight: 500;">
-                        Location data updated successfully
-                      </div>
-                    </div>
-                  `;
-                    infoWindowRef.current?.setContent(successContent);
-
-                    // Hide loading indicator
-                    setIsLoading(false);
-
-                    // Update the marker reference with the new name
-                    if (newName !== marker.Name) {
-                      markersRef.current.set(newName, mapMarker);
-                      markersRef.current.delete(marker.Name);
-                    }
-                  } catch (error) {
-                    console.error("Error updating marker after drag:", error);
-
-                    // Show error message
-                    const errorContent = `
-                    <div style="font-family: Arial, sans-serif; padding: 12px; max-width: 300px;">
-                      <div style="font-weight: bold; font-size: 16px; margin-bottom: 10px; color: #333; border-bottom: 1px solid #eee; padding-bottom: 8px;">
-                        ${marker.Name}
-                      </div>
-                      
-                      <div style="margin-bottom: 12px;">
-                        <div style="font-weight: 600; margin-bottom: 4px; color: #555;">Position updated:</div>
-                        <div style="color: #333; font-size: 14px;">Coordinates: ${newLat.toFixed(
-                          6
-                        )}, ${newLng.toFixed(6)}</div>
-                      </div>
-                      
-                      <div style="margin-top: 12px; padding-top: 8px; border-top: 1px solid #eee; color: #dc3545; font-weight: 500;">
-                        Could not retrieve location details. Position was updated.
-                      </div>
-                    </div>
-                  `;
-                    infoWindowRef.current?.setContent(errorContent);
-
-                    // Hide loading indicator
-                    setIsLoading(false);
-
-                    // Still update the position even if geocoding fails
-                    setUpdatedMarkers((prevMarkers) =>
-                      prevMarkers.map((m) =>
-                        m.Name === marker.Name
-                          ? {
-                              ...m,
-                              LatLng: `${newLat}, ${newLng}`,
-                              Update: "1",
-                            }
-                          : m
-                      )
-                    );
-                  }
+                  // Clear loading state
+                  setIsLoading(false);
+                  setActiveMarker(null);
                 }
               }
             );
@@ -788,7 +965,7 @@ export default function GoogleMap({
       if (mouseoverListener)
         google.maps.event.removeListener(mouseoverListener);
     };
-  }, [map, editMode]); // Remove updatedMarkers from dependencies
+  }, [map, editMode, performRealTimeGeocoding, updateMarkerTooltip]); // Remove updatedMarkers from dependencies
 
   // Draw InterConnect paths
   useEffect(() => {
@@ -1220,6 +1397,14 @@ export default function GoogleMap({
         </div>
       )}
 
+      {/* Active marker indicator */}
+      {activeMarker && (
+        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-white px-4 py-2 rounded-full shadow-lg z-40 flex items-center space-x-2">
+          <div className="animate-pulse w-3 h-3 rounded-full bg-blue-500"></div>
+          <div className="text-sm font-medium">Updating: {activeMarker}</div>
+        </div>
+      )}
+
       <div className="flex space-x-2 mb-4">
         <button
           className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
@@ -1254,23 +1439,6 @@ export default function GoogleMap({
           </button>
         )}
       </div>
-
-      {editMode && (
-        <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-md text-sm text-yellow-800">
-          <p className="font-medium">Edit Mode Instructions:</p>
-          <ul className="list-disc pl-5 mt-1">
-            <li>Drag markers to new locations to update them</li>
-            <li>
-              Marker details will automatically update with new location
-              information
-            </li>
-            <li>
-              Click "Preview Changes" to review your changes before saving
-            </li>
-            <li>Click "SAVE" to permanently save your changes</li>
-          </ul>
-        </div>
-      )}
 
       <div
         ref={mapRef}

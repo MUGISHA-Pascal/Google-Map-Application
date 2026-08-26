@@ -1,37 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Google Map Application
 
-## Getting Started
+A professional Google Maps integration built with Next.js, designed for visualizing and managing site markers and their interconnections.
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Interactive Map Visualization**: Renders site markers and interconnect segments (polylines) using the Google Maps JavaScript API.
+- **Advanced Edit Mode**:
+  - **Draggable Markers**: Move markers in real-time to adjust their positions.
+  - **Real-time Reverse Geocoding**: Automatically updates marker names and detailed addresses based on their new coordinates using Google's Geocoding API.
+  - **Dynamic Path Updates**: Interconnected segments automatically adjust their endpoints when a connected marker is moved.
+- **Data Management**:
+  - **JSON Data Integration**: Loads marker and segment data from local JSON files.
+  - **Data Preview**: Review all changes in a structured JSON preview before committing.
+  - **Persistence**: Save updated map state back to the server via a dedicated API.
+- **Export Capabilities**: Capture the current map view and markers as a PNG image.
+- **Professional UI**: Built with Tailwind CSS for a clean, responsive experience.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Maps API**: [Google Maps JavaScript API](https://developers.google.com/maps/documentation/javascript/)
+- **Libraries**: 
+  - `@googlemaps/js-api-loader` for optimized API loading.
+  - `html2canvas` for map image export.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🏁 Getting Started
 
-## Learn More
+### Prerequisites
 
-To learn more about Next.js, take a look at the following resources:
+- Node.js 18+
+- A Google Maps API Key with the following APIs enabled:
+  - Maps JavaScript API
+  - Geocoding API
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Installation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/MUGISHA-Pascal/Google-Map-Application.git
+   cd Google-Map-Application
+   ```
 
-## Deploy on Vercel
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. **Environment Setup**:
+   Create a `.env.local` file in the root directory and add your Google Maps API key:
+   ```env
+   NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_api_key_here
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# Google-Map-Application
+4. **Run the development server**:
+   ```bash
+   npm run dev
+   ```
+
+5. **Access the app**:
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## 📖 How to Use
+
+### Normal Mode
+- **View**: Explore markers and segments.
+- **Interact**: Click markers to see detailed location and address information in a professional popup.
+- **Hover**: See quick location summaries via tooltips.
+
+### Edit Mode
+1. Click the **"Edit Mode"** button.
+2. **Drag and Drop**: Move any marker on the map.
+3. **Observe Updates**: Watch as the coordinates, addresses, and connected paths update automatically in real-time.
+4. **Preview**: Click **"Preview Changes"** to see the modified JSON data.
+5. **Save**: Click **"SAVE"** to persist the changes to the server.
+
+## 📁 Project Structure
+
+- `src/app/`: Next.js pages and API routes.
+- `src/components/`: Reusable UI components (e.g., `GoogleMap`, `DataPreview`).
+- `src/data/`: JSON data stores for site markers and interconnect segments.
+- `src/app/utils/`: Helper functions for map loading and geocoding.
+- `src/types/`: TypeScript definitions for markers and segments.
+
+## 📄 License
+This project is licensed under the MIT License - see the LICENSE file for details.

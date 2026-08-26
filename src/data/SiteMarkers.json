@@ -4,164 +4,179 @@
     "Selected": "0",
     "Update": "1",
     "LatLng": "41.81047, -88.098253",
-    "Address": "{\"Address\":\"{ \\\"2300 Cabot drive\\\"\",\"City\":\"\\\"Lisle\\\"\",\"State\":\"\\\"IL\\\"\",\"ZIP\":\"\\\"60532\\\"\",\"Country\":\"\\\"USA\\\"}\"}",
+    "Address": "{\"Address\":\"{ \\\"\\\"2300 Cabot drive\\\"\\\"\",\"City\":\"\\\"\\\"Lisle\\\"\\\"\",\"State\":\"\\\"\\\"IL\\\"\\\"\",\"ZIP\":\"\\\"\\\"60532\\\"\\\"\",\"Country\":\"\\\"\\\"USA\\\"\\\"}\"}",
     "iconSVGfile": "myicon.svg",
     "AlertStatus": "0",
     "tooltip": "This is Lisle, IL tooltip line1\\nThis is Tooltip line2",
-    "Details": "This is IL Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line4"
+    "Details": "This is IL Details line1\\nThis is Details line2\\This is Details line3\\nThis is Details line4",
+    "": ""
   },
   {
     "Name": "Lisle-3030",
     "Selected": "0",
     "Update": "1",
     "LatLng": "41.810424, -88.112762",
-    "Address": "{\"Address\":\"{ \\\"3030 Warrenville Road\\\"\",\"City\":\"\\\"Lisle\\\"\",\"State\":\"\\\"IL\\\"\",\"ZIP\":\"\\\"60532\\\"\",\"Country\":\"\\\"USA\\\"}\"}",
+    "Address": "{\"Address\":\"{ \\\"\\\"3030 Warrenville Road\\\"\\\"\",\"City\":\"\\\"\\\"Lisle\\\"\\\"\",\"State\":\"\\\"\\\"IL\\\"\\\"\",\"ZIP\":\"\\\"\\\"60532\\\"\\\"\",\"Country\":\"\\\"\\\"USA\\\"\\\"}\"}",
     "iconSVGfile": "myicon.svg",
     "AlertStatus": "0",
     "tooltip": "This is Lisle, IL tooltip line1\\nThis is Tooltip line2",
-    "Details": "This is IL Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line4"
+    "Details": "This is IL Details line1\\nThis is Details line2\\This is Details line3\\nThis is Details line4",
+    "": ""
   },
   {
     "Name": "Lisle-1011 Midwest backup",
     "Selected": "0",
     "Update": "1",
     "LatLng": "41.8074315, -88.0752428",
-    "Address": "{\"Address\":\"{ \\\"1011 Warrenville Road\\\"\",\"City\":\"\\\"Lisle\\\"\",\"State\":\"\\\"IL\\\"\",\"ZIP\":\"\\\"60532\\\"\",\"Country\":\"\\\"USA\\\"}\"}",
+    "Address": "{\"Address\":\"{ \\\"\\\"1011 Warrenville Road\\\"\\\"\",\"City\":\"\\\"\\\"Lisle\\\"\\\"\",\"State\":\"\\\"\\\"IL\\\"\\\"\",\"ZIP\":\"\\\"\\\"60532\\\"\\\"\",\"Country\":\"\\\"\\\"USA\\\"\\\"}\"}",
     "iconSVGfile": "myicon.svg",
     "AlertStatus": "2",
     "tooltip": "This is Lisle, IL Backup site tooltip line1\\nThis is Tooltip line2",
-    "Details": "This is IL Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line4"
+    "Details": "This is IL Details line1\\nThis is Details line2\\This is Details line3\\nThis is Details line4",
+    "": ""
   },
   {
     "Name": "LovesPark, IL - DR",
     "Selected": "0",
     "Update": "1",
     "LatLng": "42.3191876, -88.9903466",
-    "Address": "{\"Address\":\"{ \\\"6430 E Riverside Blvd\\\"\",\"City\":\"\\\"Loves Park\\\"\",\"State\":\"\\\"IL\\\"\",\"ZIP\":\"\\\"61111\\\"\",\"Country\":\"\\\"United States\\\"}\"}",
+    "Address": "{\"Address\":\"{ \\\"\\\"6430 E Riverside Blvd\\\"\\\"\",\"City\":\"\\\"\\\"Loves Park\\\"\\\"\",\"State\":\"\\\"\\\"IL\\\"\\\"\",\"ZIP\":\"\\\"\\\"61111\\\"\\\"\",\"Country\":\"\\\"\\\"United States\\\"\\\"}\"}",
     "iconSVGfile": "myicon.svg",
     "AlertStatus": "0",
     "tooltip": "This is Loves Park, IL tooltip line1\\nThis is Tooltip line4",
-    "Details": "This is LovesPark IL Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line6"
+    "Details": "This is LovesPark IL Details line1\\nThis is Details line2\\This is Details line3\\nThis is Details line6",
+    "": ""
   },
   {
     "Name": "IOWA",
     "Selected": "0",
     "Update": "1",
-    "LatLng": "74.27370531599603, -44.436234887736525",
-    "Address": "{\"Address\":\"C86Q7HF7+FG\",\"City\":\"\",\"State\":\"\",\"ZIP\":\"\",\"Country\":\"\"}",
+    "LatLng": "41.2550753, -95.8647657",
+    "Address": "{\"Address\":\"{ \\\"\\\"1207 7th Ave Council Bluffs\\\"\\\"\",\"City\":\"\",\"State\":\"\\\"\\\"IA\\\"\\\"\",\"ZIP\":\"\\\"\\\"51501\\\"\\\"\",\"Country\":\"\\\"\\\"USA\\\"\\\"}\"}",
     "iconSVGfile": "myicon.svg",
     "AlertStatus": "0",
-    "tooltip": "Location: IOWA\\nAddress: C86Q7HF7+FG",
-    "Details": "IOWA Details\\nAddress: C86Q7HF7+FG"
+    "tooltip": "This is Crawford County, IOWA tooltip line1\\nThis is Tooltip line2",
+    "Details": "This is IowA Details line1\\nThis is Details line2\\This is Details line3\\nThis is Details line4",
+    "": ""
   },
   {
     "Name": "Anchorage",
     "Selected": "0",
     "Update": "1",
-    "LatLng": "-11.265156797746247, -52.80916663664556",
-    "Address": "{\"Address\":\"P5MR+W8 Jangada - Espigão do Leste\",\"City\":\"\",\"State\":\"Mato Grosso\",\"ZIP\":\"78673-000\",\"Country\":\"Brazil\"}",
+    "LatLng": "61.1910447, -149.8221347",
+    "Address": "{\"Address\":\"{ \\\"\\\"3211 Providence Dr\\\"\\\"\",\"City\":\"\\\"\\\"Anchorage\\\"\\\"\",\"State\":\"\\\"\\\"Alaska\\\"\\\"\",\"ZIP\":\"\\\"\\\"99508\\\"\\\"\",\"Country\":\"\\\"\\\"USA\\\"\\\"}\"}",
     "iconSVGfile": "myicon.svg",
     "AlertStatus": "0",
-    "tooltip": "Location: Brazil\\nAddress: P5MR+W8 Jangada - Espigão do Leste\\nRegion: Mato Grosso\\nPostal Code: 78673-000",
-    "Details": "Anchorage Details\\nAddress: P5MR+W8 Jangada - Espigão do Leste\\nState/Region: Mato Grosso\\nPostal Code: 78673-000\\nCountry: Brazil"
+    "tooltip": "This is the University of Alaska\\nThis is Tooltip line3",
+    "Details": "This is AK Details line1\\nThis is Details line2\\This is Details line3\\nThis is Details line5",
+    "": ""
+  },
+  {
+    "Name": "Sydney",
+    "Selected": "0",
+    "Update": "1",
+    "LatLng": "-33.8883996, 151.1841899",
+    "Address": "{\"Address\":\"{ \\\"\\\"\\\"\\\"\",\"City\":\"\\\"\\\"Camperdown\\\"\\\"\",\"State\":\"\\\"\\\"NSW\\\"\\\"\",\"ZIP\":\"\\\"\\\"2050\\\"\\\"\",\"Country\":\"\\\"\\\"Australia\\\"\\\"}\"}",
+    "iconSVGfile": "myicon.svg",
+    "AlertStatus": "0",
+    "tooltip": "This is the University of Sydney\\nThis is Tooltip line3",
+    "Details": "This is University of Sydney Details line1\\nThis is Details line2\\This is Details line3\\nThis is Details line5",
+    "": ""
   },
   {
     "Name": "New Delhi",
     "Selected": "0",
     "Update": "1",
-    "LatLng": "28.6362567, 77.1046916",
-    "Address": "{\"Address\":\"{ \\\"\\\"\",\"City\":\"\\\"New Delhi\\\"\",\"State\":\"\\\"Delhi\\\"\",\"ZIP\":\"\\\"110007\\\"\",\"Country\":\"\\\"India\\\"}\"}",
+    "LatLng": "32.98454564169677, 86.84495124736942",
+    "Address": "{\"Address\":\"8M48XRMV+RX\",\"City\":\"\",\"State\":\"\",\"ZIP\":\"\",\"Country\":\"\"}",
     "iconSVGfile": "myicon.svg",
     "AlertStatus": "0",
-    "tooltip": "This is the University of Delhi\\nThis is Tooltip line3",
-    "Details": "This is University of Delhi Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line5"
+    "tooltip": "Location: New Delhi\\nAddress: 8M48XRMV+RX",
+    "Details": "New Delhi Details\\nAddress: 8M48XRMV+RX",
+    "": ""
+  },
+  {
+    "Name": "Glasgow",
+    "Selected": "0",
+    "Update": "1",
+    "LatLng": "55.826371, -4.2474854",
+    "Address": "{\"Address\":\"{ \\\"\\\"50 Pacific Quay\\\"\\\"\",\"City\":\"\\\"\\\"Glasgow\\\"\\\"\",\"State\":\"\\\"\\\"Warszawa\\\"\\\"\",\"ZIP\":\"\\\"\\\"G511EA\\\"\\\"\",\"Country\":\"\\\"\\\"United Kingdom\\\"\\\"}\"}",
+    "iconSVGfile": "myicon.svg",
+    "AlertStatus": "0",
+    "tooltip": "This is the Glasgow Science Centre\\nThis is Tooltip line3",
+    "Details": "This is Glasgow Details line1\\nThis is Details line2\\This is Details line3\\nThis is Details line5",
+    "": ""
   },
   {
     "Name": "Ebury, London",
     "Selected": "0",
     "Update": "1",
     "LatLng": "51.4955727, -0.1481035",
-    "Address": "{\"Address\":\"{ \\\"54 Ebury Mews E\\\"\",\"City\":\"\\\"London\\\"\",\"State\":\"\\\"England\\\"\",\"ZIP\":\"\\\"\\\"\",\"Country\":\"\\\"United Kingdom\\\"}\"}",
+    "Address": "{\"Address\":\"{ \\\"\\\"54 Ebury Mews E\\\"\\\"\",\"City\":\"\\\"\\\"London\\\"\\\"\",\"State\":\"\\\"\\\"London\\\"\\\"\",\"ZIP\":\"\\\"\\\"\\\"\\\"\",\"Country\":\"\\\"\\\"United Kingdom\\\"\\\"}\"}",
     "iconSVGfile": "myicon.svg",
     "AlertStatus": "2",
     "tooltip": "This isEbury Mews E, London tooltip line1\\nThis is Tooltip line5",
-    "Details": "This is Ebury Mews E, London Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line7"
+    "Details": "This is Ebury Mews E, London Details line1\\nThis is Details line2\\This is Details line3\\nThis is Details line7",
+    "": ""
+  },
+  {
+    "Name": "Atomic-Brussels",
+    "Selected": "0",
+    "Update": "1",
+    "LatLng": "50.895692, 4.3376882",
+    "Address": "{\"Address\":\"{ \\\"\\\"Place de l'Atomium 1\\\"\\\"\",\"City\":\"\\\"\\\"BRUXELLES\\\"\\\"\",\"State\":\"\\\"\\\"\\\"\\\"\",\"ZIP\":\"\\\"\\\"B-1020\\\"\\\"\",\"Country\":\"\\\"\\\"Belgium\\\"\\\"}\"}",
+    "iconSVGfile": "myicon.svg",
+    "AlertStatus": "0",
+    "tooltip": "This is Brussels tooltip line1\\nThis is Tooltip line4",
+    "Details": "This is Brussels Details line1\\nThis is Details line2\\This is Details line3\\nThis is Details line6",
+    "": ""
+  },
+  {
+    "Name": "Blanford, London",
+    "Selected": "0",
+    "Update": "1",
+    "LatLng": "51.508431, -0.204722",
+    "Address": "{\"Address\":\"{ \\\"\\\"15-17 Blandford St\\\"\\\"\",\"City\":\"\\\"\\\"London W1U 3DG\\\"\\\"\",\"State\":\"\\\"\\\"London\\\"\\\"\",\"ZIP\":\"\\\"\\\"\\\"\\\"\",\"Country\":\"\\\"\\\"United Kingdom\\\"\\\"}\"}",
+    "iconSVGfile": "myicon.svg",
+    "AlertStatus": "0",
+    "tooltip": "This is Blandford St, London tooltip line1\\nThis is Tooltip line4",
+    "Details": "This is Blanford, London Details line1\\nThis is Details line2\\This is Details line3\\nThis is Details line6",
+    "": ""
   },
   {
     "Name": "Springfield, IL",
     "Selected": "0",
     "Update": "1",
     "LatLng": "39.7588067, -89.6491774",
-    "Address": "{\"Address\":\"{ \\\"3114 S 6th St\\\"\",\"City\":\"\\\"Springfield\\\"\",\"State\":\"\\\"IL\\\"\",\"ZIP\":\"\\\"62703\\\"\",\"Country\":\"\\\"United States\\\"}\"}",
+    "Address": "{\"Address\":\"{ \\\"\\\"3114 S 6th St\\\"\\\"\",\"City\":\"\\\"\\\"Springfield\\\"\\\"\",\"State\":\"\\\"\\\"IL\\\"\\\"\",\"ZIP\":\"\\\"\\\"62703\\\"\\\"\",\"Country\":\"\\\"\\\"United States\\\"\\\"}\"}",
     "iconSVGfile": "myicon.svg",
     "AlertStatus": "0",
     "tooltip": "This is Springfield, IL tooltip line1\\nThis is Tooltip line4",
-    "Details": "This is Springfield Details line1\\nThis is Details line2\\nThis is Details line3\\nThis is Details line6"
+    "Details": "This is Springfield Details line1\\nThis is Details line2\\This is Details line3\\nThis is Details line6",
+    "": ""
   },
   {
-    "Name": "Blanford, London",
+    "Name": "Aguirre, Argentina",
     "Selected": "0",
     "Update": "1",
-    "LatLng": "59.201786146062645, 92.82389967358398",
-    "Address": "{\"Address\":\"9MFJ6R2F+PH\",\"City\":\"\",\"State\":\"\",\"ZIP\":\"\",\"Country\":\"\"}",
+    "LatLng": "35.697346687686974, 127.57448080821223",
+    "Address": "{\"Address\":\"514 Ruta 34\",\"City\":\"Aguirre\",\"State\":\"Santiago del Estero\",\"ZIP\":\"\",\"Country\":\"Argentina\"}",
     "iconSVGfile": "myicon.svg",
     "AlertStatus": "0",
-    "tooltip": "Location: Blanford, London\\nAddress: 9MFJ6R2F+PH",
-    "Details": "Blanford, London Details\\nAddress: 9MFJ6R2F+PH"
+    "tooltip": "Location: Aguirre, Argentina\\nAddress: 514 Ruta 34\\nRegion: Santiago del Estero",
+    "Details": "Aguirre, Argentina Details\\nAddress: 514 Ruta 34\\nCity: Aguirre\\nState/Region: Santiago del Estero\\nCountry: Argentina",
+    "": ""
   },
   {
-    "Name": "Berdaale, Somalia",
+    "Name": "Bushell, Canada",
     "Selected": "0",
     "Update": "1",
-    "LatLng": "27.75786114868772, -0.13129111019293038",
-    "Address": "{\"Address\":\"54W8+F5 Berdaale\",\"City\":\"Berdaale\",\"State\":\"Bay\",\"ZIP\":\"\",\"Country\":\"Somalia\"}",
+    "LatLng": "40.30225691014516, -5.975459773217833",
+    "Address": "{\"Address\":\"G588+MX Bushell\",\"City\":\"Bushell\",\"State\":\"Saskatchewan\",\"ZIP\":\"S0J 0B9\",\"Country\":\"Canada\"}",
     "iconSVGfile": "myicon.svg",
     "AlertStatus": "0",
-    "tooltip": "Location: Berdaale, Somalia\\nAddress: 54W8+F5 Berdaale\\nRegion: Bay",
-    "Details": "Berdaale, Somalia Details\\nAddress: 54W8+F5 Berdaale\\nCity: Berdaale\\nState/Region: Bay\\nCountry: Somalia"
-  },
-  {
-    "Name": "Chitti, Ethiopia",
-    "Selected": "0",
-    "Update": "1",
-    "LatLng": "6.968712644073324, 35.47880653186034",
-    "Address": "{\"Address\":\"XF9H+FG Chitti\",\"City\":\"Chitti\",\"State\":\"Southern Nations, Nationalities and Peoples\",\"ZIP\":\"\",\"Country\":\"Ethiopia\"}",
-    "iconSVGfile": "myicon.svg",
-    "AlertStatus": "0",
-    "tooltip": "Location: Chitti, Ethiopia\\nAddress: XF9H+FG Chitti\\nRegion: Southern Nations, Nationalities and Peoples",
-    "Details": "Chitti, Ethiopia Details\\nAddress: XF9H+FG Chitti\\nCity: Chitti\\nState/Region: Southern Nations, Nationalities and Peoples\\nCountry: Ethiopia"
-  },
-  {
-    "Name": "Val en Vignes, France",
-    "Selected": "0",
-    "Update": "1",
-    "LatLng": "47.32732037430098, 15.636375658038313",
-    "Address": "{\"Address\":\"3M76+2W Val en Vignes\",\"City\":\"Val en Vignes\",\"State\":\"Nouvelle-Aquitaine\",\"ZIP\":\"\",\"Country\":\"France\"}",
-    "iconSVGfile": "myicon.svg",
-    "AlertStatus": "0",
-    "tooltip": "Location: Val en Vignes, France\\nAddress: 3M76+2W Val en Vignes\\nRegion: Nouvelle-Aquitaine",
-    "Details": "Val en Vignes, France Details\\nAddress: 3M76+2W Val en Vignes\\nCity: Val en Vignes\\nState/Region: Nouvelle-Aquitaine\\nCountry: France"
-  },
-  {
-    "Name": "Colonia Rossell y Rius, Uruguay",
-    "Selected": "0",
-    "Update": "1",
-    "LatLng": "-33.19897996608714, -55.69890441076058",
-    "Address": "{\"Address\":\"R822+CC Colonia Rossell y Rius\",\"City\":\"Colonia Rossell y Rius\",\"State\":\"Departamento de Durazno\",\"ZIP\":\"98000\",\"Country\":\"Uruguay\"}",
-    "iconSVGfile": "myicon.svg",
-    "AlertStatus": "0",
-    "tooltip": "Location: Colonia Rossell y Rius, Uruguay\\nAddress: R822+CC Colonia Rossell y Rius\\nRegion: Departamento de Durazno\\nPostal Code: 98000",
-    "Details": "Colonia Rossell y Rius, Uruguay Details\\nAddress: R822+CC Colonia Rossell y Rius\\nCity: Colonia Rossell y Rius\\nState/Region: Departamento de Durazno\\nPostal Code: 98000\\nCountry: Uruguay"
-  },
-  {
-    "Name": "Tangiwai, New Zealand",
-    "Selected": "0",
-    "Update": "1",
-    "LatLng": "-39.40586958156154, 175.55741071625675",
-    "Address": "{\"Address\":\"HHV4+MX Tangiwai\",\"City\":\"Tangiwai\",\"State\":\"Manawatū-Whanganui Region\",\"ZIP\":\"\",\"Country\":\"New Zealand\"}",
-    "iconSVGfile": "myicon.svg",
-    "AlertStatus": "0",
-    "tooltip": "Location: Tangiwai, New Zealand\\nAddress: HHV4+MX Tangiwai\\nRegion: Manawatū-Whanganui Region",
-    "Details": "Tangiwai, New Zealand Details\\nAddress: HHV4+MX Tangiwai\\nCity: Tangiwai\\nState/Region: Manawatū-Whanganui Region\\nCountry: New Zealand"
+    "tooltip": "Location: Bushell, Canada\\nAddress: G588+MX Bushell\\nRegion: Saskatchewan\\nPostal Code: S0J 0B9",
+    "Details": "Bushell, Canada Details\\nAddress: G588+MX Bushell\\nCity: Bushell\\nState/Region: Saskatchewan\\nPostal Code: S0J 0B9\\nCountry: Canada",
+    "": ""
   }
 ]
